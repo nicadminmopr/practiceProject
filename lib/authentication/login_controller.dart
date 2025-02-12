@@ -3,11 +3,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 import '../dashboard_screen.dart';
 import '../main.dart';
 import '../utils/storage_service.dart';
-import 'package:http/http.dart' as http;
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
@@ -17,6 +17,7 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   final StorageService storageService = StorageService();
   UserRole role = UserRole.classTeacher;
+  RxBool showPassword = false.obs;
 
   void login(body) async {
     isLoading.value = true;
@@ -57,6 +58,14 @@ class LoginController extends GetxController {
       if (responseApi['designation'] == 'Teacher') {
         await storageService.write('userType', 'teacher');
         await storageService.write('name', responseApi['name'].toString());
+        Map<String, String> headers = response.headers;
+
+        print('Response Headers:');
+        headers.forEach((key, value) {
+          log('$key: $value');
+        });
+        log('header going to save is ${response.headers['authorization']}');
+        await storageService.write('token', response.headers['authorization']);
       }
       Get.to(() => DashboardScreen());
       log('Response $responseApi');

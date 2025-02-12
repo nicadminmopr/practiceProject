@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
 import '../utils/apptextstyles.dart';
 import 'attendance_own_controller.dart';
 import 'camera_screen.dart';
@@ -16,7 +17,7 @@ class AttendanceOwn extends StatefulWidget {
 }
 
 class _AttendanceOwnState extends State<AttendanceOwn> {
-  final controller   = Get.put(AttendanceOwnController());
+  final controller = Get.put(AttendanceOwnController());
 
   void _myCallback(String message) {
     log('Callback received: $message');
@@ -25,12 +26,13 @@ class _AttendanceOwnState extends State<AttendanceOwn> {
     });
     //showConfirmationPopup(context);
   }
+
   String _callbackMessage = "";
 
   showConfirmationPopup(BuildContext context) {
     log('here entered');
     String currentDateTime =
-    DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
     showDialog(
       context: context,
@@ -63,6 +65,7 @@ class _AttendanceOwnState extends State<AttendanceOwn> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +83,7 @@ class _AttendanceOwnState extends State<AttendanceOwn> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Obx(
-                      () => Column(
+                  () => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -127,47 +130,52 @@ class _AttendanceOwnState extends State<AttendanceOwn> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Obx(()=>Checkbox(
-                      value: controller.isChecked.value,
-                      onChanged: (bool? value) {
-                        if(value!){
-                          //controller.showConfirmationPopup(Get.context!);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MyCamera(onDataReceived: _myCallback),
-                            ),
-                          );
-                        }
-                        controller.isChecked.value = value ?? false;
-
-                      },
-                    )),
+                    Obx(() => Checkbox(
+                          value: controller.isChecked.value,
+                          onChanged: (bool? value) {
+                            if (value!) {
+                              //controller.showConfirmationPopup(Get.context!);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      MyCamera(onDataReceived: _myCallback),
+                                ),
+                              );
+                            }
+                            controller.isChecked.value = value ?? false;
+                          },
+                        )),
                     Text("I confirm my attendance."),
                   ],
                 ),
                 SizedBox(
                   height: 20.0,
                 ),
-              _callbackMessage.isNotEmpty?  Center(
-                  child: MaterialButton(
-                    color: Colors.green,
-                    onPressed: () {
-                      if (controller.lat.value.isNotEmpty &&
-                          controller.long.value.isNotEmpty) {
-                        controller.markAttendanceFunction(_callbackMessage);
-                      } else {
-                        ScaffoldMessenger.of(Get.context!).showSnackBar(
-                            SnackBar(content: Text('Location is mandatory')));
-                      }
-                    },
-                    child: Text(
-                      'Mark Attendance',
-                      style:
-                      AppTextStyles.body(fontSize: 15, color: Colors.white),
-                    ),
-                  ),
-                ):SizedBox(),
+                _callbackMessage.isNotEmpty
+                    ? Center(
+                        child: MaterialButton(
+                          color: Colors.green,
+                          onPressed: () {
+                            if (controller.lat.value.isNotEmpty &&
+                                controller.long.value.isNotEmpty) {
+                              controller
+                                  .markAttendanceFunction(_callbackMessage);
+                            } else {
+                              controller.fetchLocation();
+                              ScaffoldMessenger.of(Get.context!).showSnackBar(
+                                  SnackBar(
+                                      content: Text('Location is mandatory')));
+                            }
+                          },
+                          child: Text(
+                            'Mark Attendance',
+                            style: AppTextStyles.body(
+                                fontSize: 15, color: Colors.white),
+                          ),
+                        ),
+                      )
+                    : SizedBox(),
                 /*Center(
                   child: MaterialButton(
                     color: Colors.green,
@@ -197,13 +205,13 @@ class _AttendanceOwnState extends State<AttendanceOwn> {
           ),
           Obx(() => controller.loading.value
               ? Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.grey.shade300.withOpacity(0.7),
-            child: Center(
-              child: CupertinoActivityIndicator(),
-            ),
-          )
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey.shade300.withOpacity(0.7),
+                  child: Center(
+                    child: CupertinoActivityIndicator(),
+                  ),
+                )
               : SizedBox())
         ],
       ),

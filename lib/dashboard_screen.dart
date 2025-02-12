@@ -9,9 +9,7 @@ import 'attendance_students/attendance_student_screen.dart';
 import 'attendance_students/mark_my_attendance.dart';
 import 'attendance_students/upload_material.dart';
 import 'branch_admin/Attendance_own.dart';
-import 'branch_admin/camera_screen.dart';
 import 'branch_admin/upload_circular/event.dart';
-import 'branch_admin/upload_circular/mark_attendance_branch_admin.dart';
 import 'dashboard_controller.dart';
 import 'utils/apptextstyles.dart';
 
@@ -41,6 +39,23 @@ class DashboardScreen extends StatelessWidget {
                   Icons.notifications,
                   color: Colors.black,
                   size: 25.0,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    controller.showLogoutDialog();
+                  },
+                  child: Icon(
+                    Icons.logout,
+                    color: Colors.red,
+                    size: 25.0,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
                 ),
               ],
             ),
