@@ -1,16 +1,47 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:practiceproject/school_admin/student_name_screen.dart';
+import 'package:http/http.dart' as http;
 
 import '../utils/custom_appbar.dart';
 
-
-class ClassGridScreen extends StatelessWidget {
+class ClassGridScreen extends StatefulWidget {
   Function onTap;
+
   ClassGridScreen({required this.onTap});
+
+  @override
+  State<ClassGridScreen> createState() => _ClassGridScreenState();
+}
+
+class _ClassGridScreenState extends State<ClassGridScreen> {
   final List<String> classNames = ['1', '2', '3', '4', '5', '6'];
+
+  RxList classList = [].obs;
+  RxBool loading = false.obs;
+
+  Future getClasses() async {
+    var headers = {
+      'Authorization':
+          'Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJBTlUiLCJ1c2VyUmVzcG9uc2UiOnsidXNlcm5hbWUiOiJBTlUiLCJ1c2VyVXVpZCI6IjRiZTY4M2Q1LWVhNWItNGYwNC1iYTg4LWFmYzVlNWEyZjUwMyIsInJvbGVJZCI6MTksIm5hbWUiOiJBbnVyYWRoYSBTaW5naCIsImRlc2lnbmF0aW9uIjoiVGVhY2hlciIsImlzU2VjdGlvbiI6ZmFsc2V9LCJzdWIiOiI0YmU2ODNkNS1lYTViLTRmMDQtYmE4OC1hZmM1ZTVhMmY1MDMiLCJpYXQiOjE3Mzk0MzcwODYsImV4cCI6MTczOTUyMzQ4Nn0.5c4mDEXIx5nGaaL5AKlRZH7Z0qZabIEDWuRZtOJEgF5od8us5Fz1nGkj_86TwrwJT_SaKytF-6WCbIWQtSA1gg'
+    };
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://147.79.66.224/madminapi/private/r/v1/classTeacherData/getAssignedClasses'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      loading.value = false;
+      print(await response.stream.bytesToString());
+    } else {
+      loading.value = false;
+      print(response.reasonPhrase);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +89,8 @@ class ClassGridScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final className = classNames[index];
                   return GestureDetector(
-                    onTap:(){
-                      onTap();
+                    onTap: () {
+                      widget.onTap();
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -110,5 +141,3 @@ class ClassGridScreen extends StatelessWidget {
     );
   }
 }
-
-
