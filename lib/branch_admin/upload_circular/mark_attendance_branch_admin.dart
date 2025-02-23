@@ -12,6 +12,8 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../utils/apptextstyles.dart';
 import 'package:http/http.dart' as http;
+
+import '../../utils/singleton.dart';
 // For formatting date and time
 
 class MarkAttendanceController extends GetxController {
@@ -187,7 +189,7 @@ class MarkAttendanceController extends GetxController {
     var headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          'Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJBTlUiLCJ1c2VyUmVzcG9uc2UiOnsidXNlcm5hbWUiOiJBTlUiLCJ1c2VyVXVpZCI6IjQ1ZWVmZWViLWM5Y2QtNDBiZi04MGYyLWNmNzkxNDdiNTUyOSIsInJvbGVJZCI6MTksIm5hbWUiOiJBbnVyYWRoYSBTaW5naCIsImRlc2lnbmF0aW9uIjoiVGVhY2hlciIsImlzU2VjdGlvbiI6ZmFsc2V9LCJzdWIiOiI0NWVlZmVlYi1jOWNkLTQwYmYtODBmMi1jZjc5MTQ3YjU1MjkiLCJpYXQiOjE3Mzg0OTU5MzcsImV4cCI6MTczODU4MjMzN30.liXJzLCGLAJiYhR4QARsM3vUspWGGLly2_HMU-YQgR9eilQ-vGjUQfAStdN8fNj9Riq9jfEEMYzq5ENIS0IE0A'
+          'Bearer ${AuthManager().getAuthToken()}'
     };
     var request = http.Request(
         'POST',

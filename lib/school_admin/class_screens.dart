@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:practiceproject/utils/singleton.dart';
 
 import '../utils/custom_appbar.dart';
 
@@ -23,7 +24,7 @@ class _ClassGridScreenState extends State<ClassGridScreen> {
   Future getClasses() async {
     var headers = {
       'Authorization':
-          'Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJBTlUiLCJ1c2VyUmVzcG9uc2UiOnsidXNlcm5hbWUiOiJBTlUiLCJ1c2VyVXVpZCI6IjRiZTY4M2Q1LWVhNWItNGYwNC1iYTg4LWFmYzVlNWEyZjUwMyIsInJvbGVJZCI6MTksIm5hbWUiOiJBbnVyYWRoYSBTaW5naCIsImRlc2lnbmF0aW9uIjoiVGVhY2hlciIsImlzU2VjdGlvbiI6ZmFsc2V9LCJzdWIiOiI0YmU2ODNkNS1lYTViLTRmMDQtYmE4OC1hZmM1ZTVhMmY1MDMiLCJpYXQiOjE3Mzk0MzcwODYsImV4cCI6MTczOTUyMzQ4Nn0.5c4mDEXIx5nGaaL5AKlRZH7Z0qZabIEDWuRZtOJEgF5od8us5Fz1nGkj_86TwrwJT_SaKytF-6WCbIWQtSA1gg'
+          'Bearer ${AuthManager().getAuthToken()}'
     };
     var request = http.Request(
         'GET',

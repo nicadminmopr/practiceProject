@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../dashboard_screen.dart';
 import '../main.dart';
+import '../utils/singleton.dart';
 import '../utils/storage_service.dart';
 
 class LoginController extends GetxController {
@@ -17,29 +18,7 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   final StorageService storageService = StorageService();
   UserRole role = UserRole.classTeacher;
-  RxBool showPassword = false.obs;
-
-  void login(body) async {
-    isLoading.value = true;
-    // Simulate a network call
-    await Future.delayed(Duration(seconds: 2));
-    isLoading.value = false;
-    if (body['username'] == 'schoolAdmin') {
-      await storageService.write('userType', 'schoolAdmin');
-      Get.to(() => DashboardScreen());
-    } else if (body['username'] == 'branchAdmin') {
-      await storageService.write('userType', 'branchAdmin');
-      Get.to(() => DashboardScreen());
-    } else if (body['username'] == 'teacher') {
-      await storageService.write('userType', 'teacher');
-      Get.to(() => DashboardScreen());
-    } else if (body['username'] == 'classTeacher') {
-      await storageService.write('userType', 'classTeacher');
-      Get.to(() => DashboardScreen());
-    }
-
-    Get.snackbar('Login', 'Login successful', snackStyle: SnackStyle.GROUNDED);
-  }
+  RxBool showPassword = true.obs;
 
   loginFunction(body) async {
     isLoading.value = true;
@@ -66,6 +45,7 @@ class LoginController extends GetxController {
         });
         log('header going to save is ${response.headers['authorization']}');
         await storageService.write('token', response.headers['authorization']);
+        AuthManager().setAuthToken(response.headers['authorization'].toString());
       }
       Get.to(() => DashboardScreen());
       log('Response $responseApi');

@@ -1,4 +1,6 @@
 // Importing necessary packages
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -92,6 +94,7 @@ class LoginScreen extends StatelessWidget {
                               onTap: () {
                                 controller.showPassword.value =
                                     !controller.showPassword.value;
+                                log('Value ${controller.showPassword.value}');
                               },
                               behavior: HitTestBehavior.opaque,
                               child: Obx(() => controller.showPassword.value

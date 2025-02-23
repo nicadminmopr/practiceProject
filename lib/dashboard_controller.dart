@@ -1,13 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:practiceproject/authentication/login_screen.dart';
+import 'package:practiceproject/teacher/classlist_teacher_screen.dart';
 import 'package:practiceproject/utils/apptextstyles.dart';
 import 'package:practiceproject/utils/storage_service.dart';
+
+import 'branch_admin/Attendance_own.dart';
 
 class DashboardController extends GetxController {
   final StorageService storageService = StorageService();
   RxString userRole = ''.obs;
   RxList menuRoleWise = [{}].obs;
+
+  RxList teacherMenu = [
+    {
+      "name": "Mark Your Attendance",
+      "image": "assets/attendance.png",
+      "navigation": "AttendanceOwn"
+    },
+    {
+      "name": "Mark Students Attendance",
+      "image": "assets/attendance.png",
+      "navigation": "ClasslistTeacherScreen",
+      "onEvent": "Mark Students Attendance"
+    },
+    {
+      "name": "Upload Homework",
+      "image": "assets/paper.png",
+      "navigation": "ClasslistTeacherScreen",
+      "onEvent": "Upload Homework"
+    },
+    {
+      "name": "Upload Classwork",
+      "image": "assets/paper.png",
+      "navigation": "ClasslistTeacherScreen",
+      "onEvent": "Upload Classwork"
+    },
+    {
+      "name": "Upload Assignment",
+      "image": "assets/paper.png",
+      "navigation": "ClasslistTeacherScreen",
+      "onEvent": "Upload Assignment"
+    },
+    {
+      "name": "Logout",
+      "image": "assets/logout.png",
+      "navigation": "ClasslistTeacherScreen",
+      "onEvent": "Upload Assignment"
+    }
+  ].obs;
+
+  void handleNavigation(String title) {
+    if (title == "Mark Your Attendance") {
+      Get.to(() => AttendanceOwn());
+    } else if (title == "Mark Students Attendance") {
+      Get.to(() => ClasslistTeacherScreen(onEvent: "Mark Students Attendance"));
+    } else if (title == "Upload Homework") {
+      Get.to(() => ClasslistTeacherScreen(onEvent: "Upload Homework"));
+    } else if (title == "Upload Classwork") {
+      Get.to(() => ClasslistTeacherScreen(onEvent: "Upload Classwork"));
+    } else if (title == "Upload Assignment") {
+      Get.to(() => ClasslistTeacherScreen(onEvent: "Upload Assignment"));
+    } else if (title == "Logout") {
+      showLogoutDialog();
+    } else {
+      Get.snackbar("Error", "Invalid Selection",
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    }
+  }
 
   @override
   void onInit() {

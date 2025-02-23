@@ -12,6 +12,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:practiceproject/utils/apptextstyles.dart';
 
+import '../dashboard_screen.dart';
+import '../utils/singleton.dart';
+
 class AttendanceOwnController extends GetxController {
   var currentTime = ''.obs;
   var currentDate = ''.obs;
@@ -184,8 +187,7 @@ class AttendanceOwnController extends GetxController {
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJBTlUiLCJ1c2VyUmVzcG9uc2UiOnsidXNlcm5hbWUiOiJBTlUiLCJ1c2VyVXVpZCI6IjQ1ZWVmZWViLWM5Y2QtNDBiZi04MGYyLWNmNzkxNDdiNTUyOSIsInJvbGVJZCI6MTksIm5hbWUiOiJBbnVyYWRoYSBTaW5naCIsImRlc2lnbmF0aW9uIjoiVGVhY2hlciIsImlzU2VjdGlvbiI6ZmFsc2V9LCJzdWIiOiI0NWVlZmVlYi1jOWNkLTQwYmYtODBmMi1jZjc5MTQ3YjU1MjkiLCJpYXQiOjE3Mzg0OTU5MzcsImV4cCI6MTczODU4MjMzN30.liXJzLCGLAJiYhR4QARsM3vUspWGGLly2_HMU-YQgR9eilQ-vGjUQfAStdN8fNj9Riq9jfEEMYzq5ENIS0IE0A'
+      'Authorization': 'Bearer ${AuthManager().getAuthToken()}'
     };
     var request = http.Request(
         'POST',
@@ -201,14 +203,48 @@ class AttendanceOwnController extends GetxController {
     log('Code ${response.statusCode.toString()}');
     if (response.statusCode == 200) {
       loading.value = false;
-      ScaffoldMessenger.of(Get.context!)
-          .showSnackBar(SnackBar(content: Text('Marked Successfully')));
+      Get.dialog(
+        barrierDismissible: false,
+        AlertDialog(
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/checkmark.png',
+                height: 100,
+                color: Colors.green,
+              ),
+              // Add an image in assets folder
+              SizedBox(height: 10),
+              Text(
+                "Marked Successfully",
+                style: AppTextStyles.heading(fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              MaterialButton(
+                color: Colors.green,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                onPressed: () {
+                  Get.offAll(() => DashboardScreen());
+                },
+                child:
+                Text("Back to Home", style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
+        ),
+      );
+
     } else {
       loading.value = false;
       ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
           content: Text('Image size too big . Increase Size at server side')));
     }
   }
-
-
 }

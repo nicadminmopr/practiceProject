@@ -4,6 +4,7 @@ import 'package:practiceproject/school_admin/class_screens.dart';
 import 'package:practiceproject/school_admin/student_attendance.dart';
 import 'package:practiceproject/school_admin/student_name_screen.dart';
 import 'package:practiceproject/school_admin/teacher_attendance.dart';
+import 'package:practiceproject/teacher/classlist_teacher_screen.dart';
 
 import 'attendance_students/attendance_student_screen.dart';
 import 'attendance_students/mark_my_attendance.dart';
@@ -19,6 +20,42 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              accountName: Text(
+                controller.storageService.read('name').toString(),
+                style: AppTextStyles.heading(color: Colors.white, fontSize: 20),
+              ),
+              accountEmail: Text(controller.userRole.value,
+                  style:
+                      AppTextStyles.heading(color: Colors.white, fontSize: 14)),
+            ),
+            ListView(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              children: controller.teacherMenu
+                  .map((f) => ListTile(
+                        onTap: () {
+                          controller.handleNavigation(f['name']);
+                        },
+                        leading: Image.asset(
+                          f['image'],
+                          height: 25,
+                          width: 25,
+                        ),
+                        title: Text(
+                          f['name'],
+                          style: AppTextStyles.body(
+                              fontSize: 14.0, color: Colors.black),
+                        ),
+                      ))
+                  .toList(),
+            )
+          ],
+        ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,11 +66,12 @@ class DashboardScreen extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 15.0),
             child: Row(
               children: [
-                Icon(
-                  Icons.menu,
-                  color: Colors.black,
-                  size: 25.0,
-                ),
+                Builder(
+                    builder: (context) => IconButton(
+                          icon: Icon(Icons.menu), // Drawer Icon
+                          onPressed: () =>
+                              Scaffold.of(context).openDrawer(), // Open Drawer
+                        )),
                 Spacer(),
                 Icon(
                   Icons.notifications,
@@ -248,10 +286,14 @@ class DashboardScreen extends StatelessWidget {
                                   flex: 1,
                                   child: GestureDetector(
                                     onTap: () {
-                                      Get.to(() => ClassGridScreen(
+                                      /*Get.to(() => ClassGridScreen(
                                             onTap: () {
                                               Get.to(() => AttendanceScreen());
                                             },
+                                          ));*/
+
+                                      Get.to(() => ClasslistTeacherScreen(
+                                            onEvent: 'Mark Students Attendance',
                                           ));
                                     },
                                     child: options('Mark Students Attendance',
@@ -263,11 +305,8 @@ class DashboardScreen extends StatelessWidget {
                                   child: GestureDetector(
                                     behavior: HitTestBehavior.opaque,
                                     onTap: () {
-                                      Get.to(() => ClassGridScreen(
-                                            onTap: () {
-                                              Get.to(() =>
-                                                  UploadStudyMaterialScreen());
-                                            },
+                                      Get.to(() => ClasslistTeacherScreen(
+                                            onEvent: 'Upload Homework',
                                           ));
                                     },
                                     child: options(
@@ -278,11 +317,8 @@ class DashboardScreen extends StatelessWidget {
                                   flex: 1,
                                   child: GestureDetector(
                                     onTap: () {
-                                      Get.to(() => ClassGridScreen(
-                                            onTap: () {
-                                              Get.to(() =>
-                                                  UploadStudyMaterialScreen());
-                                            },
+                                      Get.to(() => ClasslistTeacherScreen(
+                                            onEvent: 'Upload Classwork',
                                           ));
                                     },
                                     behavior: HitTestBehavior.opaque,
@@ -306,11 +342,8 @@ class DashboardScreen extends StatelessWidget {
                                   child: GestureDetector(
                                     behavior: HitTestBehavior.opaque,
                                     onTap: () {
-                                      Get.to(() => ClassGridScreen(
-                                            onTap: () {
-                                              Get.to(() =>
-                                                  UploadStudyMaterialScreen());
-                                            },
+                                      Get.to(() => ClasslistTeacherScreen(
+                                            onEvent: 'Upload Assignment',
                                           ));
                                     },
                                     child: options('Upload Assignment',

@@ -2,6 +2,7 @@ import 'package:face_camera/face_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:practiceproject/utils/singleton.dart';
 import 'package:practiceproject/utils/storage_service.dart';
 
 import 'authentication/login_screen.dart';
@@ -22,11 +23,15 @@ void main() async {
 }
 
 class MyClass extends StatelessWidget {
+  AuthManager auth = AuthManager();
   Future<bool> fetch() async {
     RxBool isLogin = false.obs;
     var data = StorageService().read('token');
+
+
     if (data != null) {
       isLogin.value = true;
+      auth.setAuthToken(data);
     } else {
       isLogin.value = false;
     }
