@@ -265,107 +265,7 @@ class DashboardScreen extends StatelessWidget {
                       ],
                     )
                   : (controller.userRole.value == 'Teacher')
-                      ? Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: () {
-                                      Get.to(() => AttendanceOwn());
-                                      //Get.to(() => MyCamera());
-                                    },
-                                    child: options('Mark Your Attendance',
-                                        'assets/attendance.png'),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      /*Get.to(() => ClassGridScreen(
-                                            onTap: () {
-                                              Get.to(() => AttendanceScreen());
-                                            },
-                                          ));*/
-
-                                      Get.to(() => ClasslistTeacherScreen(
-                                            onEvent: 'Mark Students Attendance',
-                                          ));
-                                    },
-                                    child: options('Mark Students Attendance',
-                                        'assets/attendance.png'),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: () {
-                                      Get.to(() => ClasslistTeacherScreen(
-                                            onEvent: 'Upload Homework',
-                                          ));
-                                    },
-                                    child: options(
-                                        'Upload Homework', 'assets/paper.png'),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Get.to(() => ClasslistTeacherScreen(
-                                            onEvent: 'Upload Classwork',
-                                          ));
-                                    },
-                                    behavior: HitTestBehavior.opaque,
-                                    child: options(
-                                        'Upload Classwork', 'assets/paper.png'),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Divider(),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: () {
-                                      Get.to(() => ClasslistTeacherScreen(
-                                            onEvent: 'Upload Assignment',
-                                          ));
-                                    },
-                                    child: options('Upload Assignment',
-                                        'assets/paper.png'),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: SizedBox(),
-                                  flex: 1,
-                                ),
-                                Expanded(
-                                  child: SizedBox(),
-                                  flex: 1,
-                                ),
-                                Expanded(
-                                  child: SizedBox(),
-                                  flex: 1,
-                                ),
-                              ],
-                            )
-                          ],
-                        )
+                      ? teacherUI()
                       : (controller.userRole.value == 'Class Teacher')
                           ? Row(
                               children: [
@@ -504,6 +404,31 @@ class DashboardScreen extends StatelessWidget {
         ],
       );
 
+
+  Widget optionsView(String title, image) => Column(
+    children: [
+      Container(
+        padding: EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6.0), color: Colors.deepPurple.shade100),
+        child: Image.asset(
+          image,
+          height: 25,
+          width: 25,
+          color: Colors.deepPurple,
+        ),
+      ),
+      SizedBox(
+        height: 4.0,
+      ),
+      Text(
+        title,
+        style: AppTextStyles.heading(fontSize: 12, color: Colors.black),
+        textAlign: TextAlign.center,
+      )
+    ],
+  );
+
   Widget optionsNew(String title, image) => Container(
         padding: EdgeInsets.all(12.0),
         margin: EdgeInsets.symmetric(horizontal: 5.0),
@@ -542,5 +467,147 @@ class DashboardScreen extends StatelessWidget {
             )
           ],
         ),
+      );
+
+  Widget teacherUI() => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Get.to(() => AttendanceOwn());
+                    //Get.to(() => MyCamera());
+                  },
+                  child:
+                      options('Mark Your Attendance', 'assets/attendance.png'),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    /*Get.to(() => ClassGridScreen(
+                                            onTap: () {
+                                              Get.to(() => AttendanceScreen());
+                                            },
+                                          ));*/
+
+                    Get.to(() => ClasslistTeacherScreen(
+                          onEvent: 'Mark Students Attendance',
+                        ));
+                  },
+                  child: options(
+                      'Mark Students Attendance', 'assets/attendance.png'),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Get.to(() => ClasslistTeacherScreen(
+                          onEvent: 'Upload Homework',
+                        ));
+                  },
+                  child: options('Upload Homework', 'assets/paper.png'),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(() => ClasslistTeacherScreen(
+                          onEvent: 'Upload Classwork',
+                        ));
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: options('Upload Classwork', 'assets/paper.png'),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          Divider(),
+          SizedBox(
+            height: 10.0,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Get.to(() => ClasslistTeacherScreen(
+                          onEvent: 'Upload Assignment',
+                        ));
+                  },
+                  child: options('Upload Assignment', 'assets/paper.png'),
+                ),
+              ),
+              Expanded(
+                child: SizedBox(),
+                flex: 1,
+              ),
+              Expanded(
+                child: SizedBox(),
+                flex: 1,
+              ),
+              Expanded(
+                child: SizedBox(),
+                flex: 1,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          Divider(),
+          SizedBox(
+            height: 10.0,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Get.to(() => ClasslistTeacherScreen(
+                          onEvent: 'See Classwork',
+                        ));
+                  },
+                  child: optionsView('See Classwork', 'assets/paper.png'),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Get.to(() => ClasslistTeacherScreen(
+                          onEvent: 'See Homework',
+                        ));
+                  },
+                  child: optionsView('See Homework', 'assets/paper.png'),
+                ),
+              ),
+              Expanded(
+                child: SizedBox(),
+                flex: 1,
+              ),
+              Expanded(
+                child: SizedBox(),
+                flex: 1,
+              ),
+            ],
+          ),
+        ],
       );
 }

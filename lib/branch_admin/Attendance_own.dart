@@ -24,6 +24,17 @@ class _AttendanceOwnState extends State<AttendanceOwn> {
     setState(() {
       _callbackMessage = message;
     });
+
+    if (controller.lat.value.isNotEmpty &&
+        controller.long.value.isNotEmpty) {
+      controller
+          .markAttendanceFunction(_callbackMessage);
+    } else {
+      controller.fetchLocation();
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+              content: Text('Location is mandatory')));
+    }
     //showConfirmationPopup(context);
   }
 

@@ -79,79 +79,43 @@ class StudentListTeacherScreen extends StatelessWidget {
                   () => !controller.loading.value
                       ? controller.studentList.isNotEmpty
                           ? ListView.builder(
-                              itemCount: controller.studentList.length,
-                              itemBuilder: (context, index) {
-                                return Obx(() => ListTile(
-                                      title: Text(
-                                        controller.studentList[index]
-                                            ['studentName'],
-                                        style: AppTextStyles.heading(
-                                          color: Colors.black,
-                                          fontSize: 14.0,
-                                        ).copyWith(fontWeight: FontWeight.w800),
-                                      ),
-                                      trailing: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Radio<bool>(
-                                            activeColor: Colors.black,
-                                            value: true,
-                                            groupValue: controller.attendance[
-                                                controller.studentList[index]
-                                                    ["studentId"]],
-                                            onChanged: (bool? value) {
-                                              controller.toggleAttendance(
-                                                  controller.studentList[index]
-                                                      ["studentId"],
-                                                  value ?? false);
-                                            },
-                                          ),
-                                          Text(
-                                            "Present",
-                                            style: AppTextStyles.body(
-                                                fontSize: 12.0,
-                                                color: Colors.black),
-                                          ),
-                                          Radio<bool>(
-                                            activeColor: Colors.black,
-                                            value: false,
-                                            groupValue: controller.attendance[
-                                                controller.studentList[index]
-                                                    ["studentId"]],
-                                            onChanged: (bool? value) {
-                                              controller.toggleAttendance(
-                                                  controller.studentList[index]
-                                                      ["studentId"],
-                                                  value ?? false);
-                                            },
-                                          ),
-                                          Text(
-                                            "Absent",
-                                            style: AppTextStyles.body(
-                                                fontSize: 12.0,
-                                                color: Colors.black),
-                                          ),
-                                        ],
-                                      ),
-                                      /* trailing: Checkbox(
-                          activeColor: Colors.black,
-                          shape: CircleBorder(),
-                          value: controller.attendance[
-                                  controller.studentList[index]["studentId"]] ??
-                              false,
-                          onChanged: (bool? value) {
-                            controller.toggleAttendance(
-                                controller.studentList[index]["studentId"],
-                                value ?? false);
-                          },
-                        ),*/
-                                    ));
+                    itemCount: controller.studentList.length,
+                    itemBuilder: (context, index) {
+                      return Obx(() => ListTile(
+                        title: Text(
+                          controller.studentList[index]['studentName'],
+                          style: AppTextStyles.heading(
+                            color: Colors.black,
+                            fontSize: 14.0,
+                          ).copyWith(fontWeight: FontWeight.w800),
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            /*Text(
+                              "Absent",
+                              style: AppTextStyles.body(fontSize: 12.0, color: Colors.black),
+                            ),*/
+                            Switch(
+                              activeColor: Colors.green,
+                              value: controller.attendance[
+                              controller.studentList[index]["studentId"]] ??
+                                  false,
+                              onChanged: (bool value) {
+                                controller.toggleAttendance(
+                                    controller.studentList[index]["studentId"], value);
                               },
-                            )
+                            ),
+                           /* Text(
+                              "Present",
+                              style: AppTextStyles.body(fontSize: 12.0, color: Colors.black),
+                            ),*/
+                          ],
+                        ),
+                      ));
+                    },
+                  )
                           : Center(
                               child: Text('No Data Available'),
                             )

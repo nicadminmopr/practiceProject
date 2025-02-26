@@ -8,14 +8,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:practiceproject/teacher/students/student_list_teacher_screen.dart';
 import 'package:practiceproject/teacher/upload_section/upload_screen.dart';
+import 'package:practiceproject/teacher/view_screen.dart';
 
 import '../utils/custom_appbar.dart';
 import '../utils/singleton.dart';
 
 class SubjectTeacherScreen extends StatefulWidget {
-  /*String onEvent;
+  String onEvent;
 
-  SubjectTeacherScreen({required this.onEvent});*/
+  SubjectTeacherScreen({required this.onEvent});
 
   @override
   State<SubjectTeacherScreen> createState() => _SubjectTeacherScreenState();
@@ -29,10 +30,7 @@ class _SubjectTeacherScreenState extends State<SubjectTeacherScreen> {
 
   Future getSubjects() async {
     loading.value = true;
-    var headers = {
-      'Authorization':
-          'Bearer ${AuthManager().getAuthToken()}'
-    };
+    var headers = {'Authorization': 'Bearer ${AuthManager().getAuthToken()}'};
     var request = http.Request(
         'GET',
         Uri.parse(
@@ -109,17 +107,27 @@ class _SubjectTeacherScreenState extends State<SubjectTeacherScreen> {
                             final className = classList.value[index];
                             return GestureDetector(
                               onTap: () {
-                                Get.to(
-                                    () => UploadScreen(
-                                          title: Get.arguments['title'],
-                                        ),
-                                    arguments: {
-                                      'title': Get.arguments['title'],
-                                      'classId':
-                                          Get.arguments['classId'].toString(),
-                                      'subjectId':
-                                          className['code'].toString(),
-                                    });
+                                if (widget.onEvent.isEmpty) {
+                                  Get.to(
+                                      () => UploadScreen(
+                                            title: Get.arguments['title'],
+                                          ),
+                                      arguments: {
+                                        'title': Get.arguments['title'],
+                                        'classId':
+                                            Get.arguments['classId'].toString(),
+                                        'subjectId':
+                                            className['code'].toString(),
+                                      });
+                                } else {
+                                  Get.to(() => ViewScreen(),arguments: {
+                                    'title': Get.arguments['title'],
+                                    'classId':
+                                    Get.arguments['classId'].toString(),
+                                    'subjectId':
+                                    className['code'].toString(),
+                                  });
+                                }
                               },
                               child: Container(
                                 decoration: BoxDecoration(

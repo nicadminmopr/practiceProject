@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +13,7 @@ import '../../utils/singleton.dart';
 class StudentListTeacherController extends GetxController {
   RxList studentList = [].obs;
   RxBool loading = false.obs;
-  RxBool marking  = false.obs;
+  RxBool marking = false.obs;
   var attendance = <int, bool>{}.obs;
 
   void toggleAttendance(int studentId, bool isPresent) {
@@ -21,10 +22,7 @@ class StudentListTeacherController extends GetxController {
 
   getStudentList() async {
     loading.value = true;
-    var headers = {
-      'Authorization':
-          'Bearer ${AuthManager().getAuthToken()}'
-    };
+    var headers = {'Authorization': 'Bearer ${AuthManager().getAuthToken()}'};
     var request = http.Request(
         'GET',
         Uri.parse(
@@ -49,8 +47,7 @@ class StudentListTeacherController extends GetxController {
   saveAttendance(body) async {
     marking.value = true;
     var headers = {
-      'Authorization':
-          'Bearer ${AuthManager().getAuthToken()}',
+      'Authorization': 'Bearer ${AuthManager().getAuthToken()}',
       'Content-Type': 'application/json'
     };
     var request = http.Request(
@@ -103,8 +100,9 @@ class StudentListTeacherController extends GetxController {
       );
     } else {
       marking.value = false;
-      ScaffoldMessenger.of(Get.context!)
-          .showSnackBar(SnackBar(content: Text('Something went wrong')));
+      ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+          content: Text(
+              'Something went wrong ${response.statusCode.toString()} Server Error')));
     }
   }
 
@@ -127,9 +125,9 @@ class StudentListTeacherController extends GetxController {
               "year": formattedDate[2],
             })
         .toList();
-
-    saveAttendance(attendanceList); // Replace with API call
-  }
+    log('body sent is $attendanceList');
+    saveAttendance(attendanceList);
+  } // Replace with API call
 
   @override
   void onInit() {
