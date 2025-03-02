@@ -1,10 +1,16 @@
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:practiceproject/utils/apptextstyles.dart';
 
 import '../utils/custom_appbar.dart';
 import 'package:http/http.dart' as http;
+
+import '../utils/singleton.dart';
 
 class ViewScreen extends StatefulWidget {
   const ViewScreen({super.key});
@@ -16,24 +22,28 @@ class ViewScreen extends StatefulWidget {
 class _ViewScreenState extends State<ViewScreen> {
   RxString title = ''.obs;
   RxString url = ''.obs;
+  RxMap screenData = {}.obs;
+  RxBool loading = false.obs;
 
   getData(url) async {
-    var headers = {
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJBTlUiLCJ1c2VyUmVzcG9uc2UiOnsidXNlcm5hbWUiOiJBTlUiLCJ1c2VyVXVpZCI6IjRiZTY4M2Q1LWVhNWItNGYwNC1iYTg4LWFmYzVlNWEyZjUwMyIsInJvbGVJZCI6MTksIm5hbWUiOiJBbnVyYWRoYSBTaW5naCIsImRlc2lnbmF0aW9uIjoiVGVhY2hlciIsImlzU2VjdGlvbiI6ZmFsc2V9LCJzdWIiOiI0YmU2ODNkNS1lYTViLTRmMDQtYmE4OC1hZmM1ZTVhMmY1MDMiLCJpYXQiOjE3NDA0ODMxNTEsImV4cCI6MTc0MDU2OTU1MX0.Y6vX2YDgtevUQ6DrT94BGaJqQr4hSQp7gShBOQoTYGCPQXkRZyfkQgOZEc3kN_IrTAOV3-fLfZWrdgwHJQXrjg'
-    };
-    var request = http.Request(
-        'GET',
-        Uri.parse(
-            '$url'));
+    log('called');
+    loading.value = true;
+    var headers = {'Authorization': 'Bearer ${AuthManager().getAuthToken()}'};
+    var request = http.Request('GET', Uri.parse('$url'));
 
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
-
+    log('${response.statusCode.toString()}');
     if (response.statusCode == 200) {
+      loading.value = false;
 
+      var d = await response.stream.bytesToString();
+      var dd = jsonDecode(d);
+      screenData.value = dd;
+      log('Screen Data${screenData.value}');
     } else {
+      loading.value = false;
       print(response.reasonPhrase);
     }
   }
@@ -49,16 +59,21 @@ class _ViewScreenState extends State<ViewScreen> {
     var body = Get.arguments;
     log('body : ${body}');
     if (body['title'] == 'See Classwork') {
+      log('1');
       setState(() {
-        title.value = 'Assignment';
-        url.value =' http://147.79.66.224/madminapi/private/v1/r/classworkData/${body['subjectId'].toString()}/${body['classId'].toString()}/0';
-
+        title.value = 'Classwork';
+        url.value =
+            'http://147.79.66.224/madminapi/private/v1/r/classworkData/${body['subjectId'].toString()}/${body['classId'].toString()}/0';
       });
+      getData(url.value);
     } else if (body['title'] == 'See Homework') {
+      log('2');
       setState(() {
         title.value = 'Homework';
-        url.value = 'http://147.79.66.224/madminapi/private/v1/r/homeworkData/${body['subjectId'].toString()}/${body['classId'].toString()}/0';
+        url.value =
+            'http://147.79.66.224/madminapi/private/v1/r/homeworkData/${body['subjectId'].toString()}/${body['classId'].toString()}/0';
       });
+      getData(url.value);
     }
   }
 
@@ -67,6 +82,71 @@ class _ViewScreenState extends State<ViewScreen> {
     return Scaffold(
       appBar: CustomAppBar(title: title.value),
       backgroundColor: Colors.white,
+      body: Obx(() => !loading.value
+          ? screenData.value.isNotEmpty &&
+                  screenData.value['workTitle'] != null &&
+                  screenData.value['workContent'] != null
+              ? Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'Title',
+                        style: AppTextStyles.body(color: Colors.grey).copyWith(fontSize: 12),
+                      ),
+                      SizedBox(
+                        height: 7,
+                      ),
+                      Text(
+                        screenData.value['workTitle']??"",
+                        style: AppTextStyles.body(color: Colors.black).copyWith(fontSize: 14),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'Description',
+                        style: AppTextStyles.body(color: Colors.grey).copyWith(fontSize: 12),
+                      ),
+                      SizedBox(
+                        height: 7,
+                      ),
+                      Text(
+                        screenData.value['workContent']??"",
+                        style: AppTextStyles.body(color: Colors.black).copyWith(fontSize: 14),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'Date',
+                        style: AppTextStyles.body(color: Colors.grey).copyWith(fontSize: 12),
+                      ),
+                      SizedBox(
+                        height: 7,
+                      ),
+                      Text(
+                        DateFormat('dd-MM-yyyy').format(DateTime.parse(screenData.value['workSubmissionDate']))    ,
+                        style: AppTextStyles.body(color: Colors.black).copyWith(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                )
+              : Center(
+                  child: Image.asset(
+                    'assets/no-data.png',
+                    height: 80,
+                    width: 80,
+                  ),
+                )
+          : Center(
+              child: CupertinoActivityIndicator(),
+            )),
     );
   }
 }

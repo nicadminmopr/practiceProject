@@ -107,7 +107,17 @@ class _SubjectTeacherScreenState extends State<SubjectTeacherScreen> {
                             final className = classList.value[index];
                             return GestureDetector(
                               onTap: () {
-                                if (widget.onEvent.isEmpty) {
+                                log('Event : ${widget.onEvent}');
+
+                                if (widget.onEvent == 'See Classwork' ||
+                                    widget.onEvent == 'See Homework') {
+                                  Get.to(() => ViewScreen(), arguments: {
+                                    'title': Get.arguments['title'],
+                                    'classId':
+                                        Get.arguments['classId'].toString(),
+                                    'subjectId': className['code'].toString(),
+                                  });
+                                } else {
                                   Get.to(
                                       () => UploadScreen(
                                             title: Get.arguments['title'],
@@ -119,14 +129,6 @@ class _SubjectTeacherScreenState extends State<SubjectTeacherScreen> {
                                         'subjectId':
                                             className['code'].toString(),
                                       });
-                                } else {
-                                  Get.to(() => ViewScreen(),arguments: {
-                                    'title': Get.arguments['title'],
-                                    'classId':
-                                    Get.arguments['classId'].toString(),
-                                    'subjectId':
-                                    className['code'].toString(),
-                                  });
                                 }
                               },
                               child: Container(

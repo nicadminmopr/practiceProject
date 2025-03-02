@@ -119,7 +119,7 @@ class _ClasslistTeacherScreenState extends State<ClasslistTeacherScreen> {
                                         'classId': className['code'].toString()
                                       });
                                 } else {
-                                  Get.to(() => SubjectTeacherScreen(onEvent: 'view',),
+                                  Get.to(() => SubjectTeacherScreen(onEvent: widget.onEvent,),
                                       arguments: {
                                         'className': className['value'],
                                         'classId': className['code'].toString(),

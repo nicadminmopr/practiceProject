@@ -102,41 +102,43 @@ class DashboardScreen extends StatelessWidget {
             height: 20,
           ),
           // Teacher's Name
-          Container(
-            width: Get.width,
-            height: Get.height * 0.15,
-            padding: EdgeInsets.all(12),
-            margin: EdgeInsets.symmetric(horizontal: 15.0),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.deepPurple, Colors.deepPurple.shade200],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight),
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  controller.storageService.read('name').toString(),
-                  // Replace with dynamic teacher's name
-                  style:
+          Stack(
+            children: [
+              Container(
+                width: Get.width,
+                height: Get.height * 0.13,
+                padding: EdgeInsets.all(12),
+                margin: EdgeInsets.symmetric(horizontal: 15.0),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Colors.deepPurple, Colors.deepPurple.shade200],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight),
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      controller.storageService.read('name').toString(),
+                      // Replace with dynamic teacher's name
+                      style:
                       AppTextStyles.heading(fontSize: 25, color: Colors.white),
-                ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Obx(() => Text(
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Obx(() => Text(
                       controller.userRole.value,
                       // Replace with dynamic teacher's name
                       style:
-                          AppTextStyles.body(fontSize: 18, color: Colors.white),
+                      AppTextStyles.body(fontSize: 18, color: Colors.white),
                     )),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Row(
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    /*Row(
                   children: [
                     Icon(
                       Icons.access_time,
@@ -152,9 +154,12 @@ class DashboardScreen extends StatelessWidget {
                           AppTextStyles.body(fontSize: 13, color: Colors.white),
                     )
                   ],
-                )
-              ],
-            ),
+                )*/
+                  ],
+                ),
+              ),
+              Positioned(right: 0,top: -5,child: ClipOval(child: Image.asset('assets/8030890.png',height: 80,width: 80,),),)
+            ],
           ),
           SizedBox(height: 40), // Space between name and buttons
 
@@ -404,30 +409,30 @@ class DashboardScreen extends StatelessWidget {
         ],
       );
 
-
   Widget optionsView(String title, image) => Column(
-    children: [
-      Container(
-        padding: EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6.0), color: Colors.deepPurple.shade100),
-        child: Image.asset(
-          image,
-          height: 25,
-          width: 25,
-          color: Colors.deepPurple,
-        ),
-      ),
-      SizedBox(
-        height: 4.0,
-      ),
-      Text(
-        title,
-        style: AppTextStyles.heading(fontSize: 12, color: Colors.black),
-        textAlign: TextAlign.center,
-      )
-    ],
-  );
+        children: [
+          Container(
+            padding: EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6.0),
+                color: Colors.deepPurple.shade100),
+            child: Image.asset(
+              image,
+              height: 25,
+              width: 25,
+              color: Colors.deepPurple,
+            ),
+          ),
+          SizedBox(
+            height: 4.0,
+          ),
+          Text(
+            title,
+            style: AppTextStyles.heading(fontSize: 12, color: Colors.black),
+            textAlign: TextAlign.center,
+          )
+        ],
+      );
 
   Widget optionsNew(String title, image) => Container(
         padding: EdgeInsets.all(12.0),
@@ -472,6 +477,9 @@ class DashboardScreen extends StatelessWidget {
   Widget teacherUI() => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          SizedBox(
+            height: 20.0,
+          ),
           Row(
             children: [
               Expanded(
@@ -572,41 +580,97 @@ class DashboardScreen extends StatelessWidget {
           SizedBox(
             height: 10.0,
           ),
-          Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    Get.to(() => ClasslistTeacherScreen(
-                          onEvent: 'See Classwork',
-                        ));
-                  },
-                  child: optionsView('See Classwork', 'assets/paper.png'),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 15.0),
+            child: Row(
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        Get.to(() => ClasslistTeacherScreen(
+                              onEvent: 'See Homework',
+                            ));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(12.0),
+                        decoration: BoxDecoration(
+                            color: Colors.deepPurple,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Check Added Homework',
+                              style: AppTextStyles.heading(
+                                  fontSize: 16.0, color: Colors.white),
+                            ),
+                            SizedBox(
+                              height: 4.0,
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                padding: EdgeInsets.all(6.0),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle),
+                                child: Icon(
+                                  Icons.arrow_forward,
+                                  size: 20,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )),
+                SizedBox(
+                  width: 10.0,
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    Get.to(() => ClasslistTeacherScreen(
-                          onEvent: 'See Homework',
-                        ));
-                  },
-                  child: optionsView('See Homework', 'assets/paper.png'),
-                ),
-              ),
-              Expanded(
-                child: SizedBox(),
-                flex: 1,
-              ),
-              Expanded(
-                child: SizedBox(),
-                flex: 1,
-              ),
-            ],
+                Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(() => ClasslistTeacherScreen(
+                              onEvent: 'See Classwork',
+                            ));
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Container(
+                        padding: EdgeInsets.all(12.0),
+                        decoration: BoxDecoration(
+                            color: Colors.deepPurple,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Check Added Classwork',
+                              style: AppTextStyles.heading(
+                                  fontSize: 16.0, color: Colors.white),
+                            ),
+                            SizedBox(
+                              height: 4.0,
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                padding: EdgeInsets.all(6.0),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle),
+                                child: Icon(
+                                  Icons.arrow_forward,
+                                  size: 20,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )),
+              ],
+            ),
           ),
         ],
       );

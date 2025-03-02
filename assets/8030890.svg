@@ -1,0 +1,51 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+	<title>8030890</title>
+	<defs>
+		<linearGradient id="g1" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-503.573,429.221,-39.525,-46.372,872.407,358.112)">
+			<stop offset=".001" stop-color="#6441a5"/>
+			<stop offset="1" stop-color="#2a0845"/>
+		</linearGradient>
+		<linearGradient id="g2" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(77.397,-255.486,185.668,56.246,380.165,448.502)">
+			<stop offset=".001" stop-color="#6441a5"/>
+			<stop offset="1" stop-color="#2a0845"/>
+		</linearGradient>
+	</defs>
+	<style>
+		tspan { white-space:pre } 
+		.s0 { opacity: .3;fill: #ffffff } 
+		.t1 { font-size: 36px;fill: #000000;font-weight: 600;font-family: "Inter-SemiBold", "Inter" } 
+		.t2 { font-size: 36px;fill: #6441a5;font-weight: 600;font-family: "Inter-SemiBold", "Inter" } 
+		.t3 { font-size: 12px;fill: #000000;font-weight: 500;font-family: "Inter-Medium", "Inter" } 
+		.s4 { fill: #6441a5 } 
+		.s5 { fill: url(#g1) } 
+		.s6 { fill: url(#g2) } 
+	</style>
+	<g id="BACKGROUND">
+		<path id="&lt;Path&gt;" class="s0" d="m1000 1000h-1000v-1000h1000z"/>
+	</g>
+	<g id="TEXT">
+		<text id="COMPANYNAME" style="transform: matrix(2,0,0,2,182.451,733.625)" >
+			<tspan x="0" y="0" class="t1" dx="0" >	</tspan><tspan  y="0" class="t1" dx="0" > </tspan><tspan  y="0" class="t1" dx="0" >K</tspan><tspan  y="0" class="t2" dx="0" >C</tspan><tspan  y="0" class="t2" dx="0" >O</tspan><tspan  y="0" class="t2" dx="0" >N</tspan><tspan  y="0" class="t2" dx="0" >N</tspan><tspan  y="0" class="t2" dx="0" >E</tspan><tspan  y="0" class="t2" dx="0" >C</tspan><tspan  y="0" class="t2" dx="0" >T</tspan><tspan  y="0" class="t2" dx="0" >
+</tspan>
+		</text>
+		<text id="Knowledge Connect" style="transform: matrix(2,0,0,2,351.811,773.088)" >
+			<tspan x="0" y="0" class="t3" dx="0" >K</tspan><tspan  y="0" class="t3" dx="0" >n</tspan><tspan  y="0" class="t3" dx="0" >o</tspan><tspan  y="0" class="t3" dx="0" >w</tspan><tspan  y="0" class="t3" dx="0" >l</tspan><tspan  y="0" class="t3" dx="0" >e</tspan><tspan  y="0" class="t3" dx="0" >d</tspan><tspan  y="0" class="t3" dx="0" >g</tspan><tspan  y="0" class="t3" dx="0" >e</tspan><tspan  y="0" class="t3" dx="0" > </tspan><tspan  y="0" class="t3" dx="0" >C</tspan><tspan  y="0" class="t3" dx="0" >o</tspan><tspan  y="0" class="t3" dx="0" >n</tspan><tspan  y="0" class="t3" dx="0" >n</tspan><tspan  y="0" class="t3" dx="0" >e</tspan><tspan  y="0" class="t3" dx="0" >c</tspan><tspan  y="0" class="t3" dx="0" >t</tspan><tspan  y="0" class="t3" dx="0" >
+</tspan>
+		</text>
+	</g>
+	<g id="OBJECT">
+		<g id="&lt;Group&gt;">
+			<g id="&lt;Group&gt;">
+				<path id="&lt;Path&gt;" class="s4" d="m458.9 584.3h-82.9v-76.2h20v56.2h42.9v-72.7h20z"/>
+			</g>
+			<g id="&lt;Group&gt;">
+				<path id="&lt;Path&gt;" class="s4" d="m396 414.4h-20v-197.9h10c40.2 0 72.9 32.7 72.9 72.9v66.4h-20v-66.4c0-25.7-18.5-47.3-42.9-51.9z"/>
+			</g>
+			<g id="&lt;Group&gt;">
+				<path id="&lt;Path&gt;" class="s4" d="m610 588.5l-99.7-99.7 14.2-14.1 84.9 84.8c13.9-20.5 11.8-48.8-6.4-67.1l-38.2-38.1 14.1-14.2 38.2 38.2c28.4 28.4 28.4 74.7 0 103.1z"/>
+			</g>
+			<path id="&lt;Path&gt;" class="s5" d="m689.6 245.7c3-4.9 4.9-8.1 4.9-8.1 0 0-236.6 78.5-389 323.4l71-78.1c0 0 122.2-165.3 313.1-237.2z"/>
+			<path id="&lt;Path&gt;" class="s6" d="m427.5 479.4c0 0-1.1-16.4-22.2-23.2 0 0 9.9-2.9 27.3 3.6 17.4 6.6 27.1 10.2 27.1 10.2 0 0 99.6-42.8 187.6-166.4 0 0-32.4 3.8-50.5-9.2 0 0 49.1 6 60.4-3 8.3-6.6 24.4-32.3 32.4-45.7-190.9 71.9-313.1 237.2-313.1 237.2 0 0 30 6.8 51-3.5z"/>
+		</g>
+	</g>
+</svg>
