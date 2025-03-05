@@ -1,0 +1,2 @@
+/Users/sangamsharma/StudioProjects/practiceProject/android/app/.cxx/RelWithDebInfo/5j3w1545/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/sangamsharma/StudioProjects/practiceProject/android/app/.cxx/RelWithDebInfo/5j3w1545/armeabi-v7a/CMakeFiles/rebuild_cache.dir

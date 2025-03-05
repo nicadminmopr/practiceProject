@@ -24,14 +24,16 @@ void main() async {
 
 class MyClass extends StatelessWidget {
   AuthManager auth = AuthManager();
+
   Future<bool> fetch() async {
     RxBool isLogin = false.obs;
     var data = StorageService().read('token');
-
+    var roleId = StorageService().read('roleId');
 
     if (data != null) {
       isLogin.value = true;
       auth.setAuthToken(data);
+      auth.setRoleId(roleId);
     } else {
       isLogin.value = false;
     }

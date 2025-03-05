@@ -34,19 +34,27 @@ class LoginController extends GetxController {
     if (response.statusCode == 200) {
       isLoading.value = false;
       var responseApi = jsonDecode(await response.stream.bytesToString());
-      if (responseApi['designation'] == 'Teacher') {
-        await storageService.write('userType', 'teacher');
-        await storageService.write('name', responseApi['name'].toString());
-        Map<String, String> headers = response.headers;
+      if (responseApi['roleId'].toString() == '19') {
 
-        print('Response Headers:');
-        headers.forEach((key, value) {
-          log('$key: $value');
-        });
-        log('header going to save is ${response.headers['authorization']}');
-        await storageService.write('token', response.headers['authorization']);
-        AuthManager().setAuthToken(response.headers['authorization'].toString());
+        await storageService.write('userType', 'teacher');
+      } else if (responseApi['roleId'].toString() == '3') {
+
+      } else if (responseApi['roleId'].toString() == '2') {
+
       }
+
+      await storageService.write('name', responseApi['name'].toString());
+      await storageService.write('roleId', responseApi['roleId'].toString());
+      AuthManager().setRoleId(responseApi['roleId'].toString());
+      Map<String, String> headers = response.headers;
+
+      print('Response Headers:');
+      headers.forEach((key, value) {
+        log('$key: $value');
+      });
+      log('header going to save is ${response.headers['authorization']}');
+      await storageService.write('token', response.headers['authorization']);
+      AuthManager().setAuthToken(response.headers['authorization'].toString());
       Get.to(() => DashboardScreen());
       log('Response $responseApi');
     } else {

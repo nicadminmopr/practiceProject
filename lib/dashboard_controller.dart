@@ -1,10 +1,14 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:practiceproject/authentication/login_screen.dart';
 import 'package:practiceproject/teacher/classlist_teacher_screen.dart';
 import 'package:practiceproject/utils/apptextstyles.dart';
+import 'package:practiceproject/utils/singleton.dart';
 import 'package:practiceproject/utils/storage_service.dart';
-
+import 'package:http/http.dart' as http;
 import 'branch_admin/Attendance_own.dart';
 
 class DashboardController extends GetxController {
@@ -12,6 +16,10 @@ class DashboardController extends GetxController {
   RxString userRole = ''.obs;
   RxList menuRoleWise = [{}].obs;
 
+  RxString selectedBranch = ''.obs;
+  RxList branchList = [].obs;
+  RxBool loading = false.obs;
+  RxMap aData = {}.obs;
   RxList teacherMenu = [
     {
       "name": "Mark Your Attendance",
@@ -77,7 +85,7 @@ class DashboardController extends GetxController {
   }
 
   getUserType() async {
-    String? usertype = storageService.read<String>('userType');
+    /*String? usertype = storageService.read<String>('userType');
     if (usertype == 'schoolAdmin') {
       userRole.value = 'School Admin';
     } else if (usertype == 'branchAdmin') {
@@ -86,6 +94,21 @@ class DashboardController extends GetxController {
       userRole.value = 'Teacher';
     } else if (usertype == 'classTeacher') {
       userRole.value = 'Class Teacher';
+    }*/
+
+    if (AuthManager().roleId == '19') {
+      userRole.value = 'Teacher';
+    } else if (AuthManager().roleId == '3') {
+      userRole.value = 'Class Teacher';
+    } else if (AuthManager().roleId == '2') {
+      userRole.value = 'Branch Admin';
+      Future.value(
+        [
+      getBranches(),
+      getEmployeeData()
+        ]
+      );
+
     }
   }
 
@@ -119,5 +142,52 @@ class DashboardController extends GetxController {
         ),
       ],
     );
+  }
+
+  getBranches() async {
+    loading.value = true;
+    var headers = {'Authorization': 'Bearer ${AuthManager().getAuthToken()}'};
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'http://147.79.66.224/madminapi/private/v1/r/schoolBranches/getBranchesBySchoolId'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      loading.value = false;
+      var d = await response.stream.bytesToString();
+      var r = jsonDecode(d);
+      branchList.value = r;
+      log('Branches ${branchList.value}');
+      selectedBranch.value = branchList.first['code'].toString();
+    } else {
+      loading.value = false;
+      print(response.reasonPhrase);
+    }
+  }
+
+  getEmployeeData()async{
+    var headers = {
+      'Authorization': 'Bearer ${AuthManager().getAuthToken()}'
+    };
+    var request = http.Request('GET', Uri.parse('http://147.79.66.224/madminapi/private/r/v1/employeeAttendanceData/branchWiseData/0'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+
+      var d = await response.stream.bytesToString();
+      var r = jsonDecode(d);
+      aData.value = r;
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+
   }
 }

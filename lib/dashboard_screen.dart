@@ -1,24 +1,97 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:practiceproject/school_admin/class_screens.dart';
 import 'package:practiceproject/school_admin/student_attendance.dart';
 import 'package:practiceproject/school_admin/student_name_screen.dart';
 import 'package:practiceproject/school_admin/teacher_attendance.dart';
 import 'package:practiceproject/teacher/classlist_teacher_screen.dart';
+import 'package:practiceproject/utils/singleton.dart';
 
 import 'attendance_students/attendance_student_screen.dart';
 import 'attendance_students/mark_my_attendance.dart';
 import 'attendance_students/upload_material.dart';
 import 'branch_admin/Attendance_own.dart';
+import 'branch_admin/attendance_own_controller.dart';
+import 'branch_admin/camera_screen.dart';
 import 'branch_admin/upload_circular/event.dart';
 import 'dashboard_controller.dart';
 import 'utils/apptextstyles.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
   final controller = Get.put(DashboardController());
+  final controller1 = Get.put(AttendanceOwnController());
+
+  //TODO: Code for attendance
+
+  void _myCallback(String message) {
+    log('Callback received: $message');
+    setState(() {
+      _callbackMessage = message;
+    });
+
+    if (controller1.lat.value.isNotEmpty && controller1.long.value.isNotEmpty) {
+      controller1.markAttendanceFunction(_callbackMessage);
+    } else {
+      controller1.fetchLocation();
+      ScaffoldMessenger.of(Get.context!)
+          .showSnackBar(SnackBar(content: Text('Location is mandatory')));
+    }
+    //showConfirmationPopup(context);
+  }
+
+  String _callbackMessage = "";
+
+  showConfirmationPopup(BuildContext context) {
+    log('here entered');
+    String currentDateTime =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Attendance"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Date & Time: $currentDateTime",
+                style: AppTextStyles.heading(fontSize: 15, color: Colors.black),
+              ),
+              SizedBox(height: 10),
+              Text(
+                "I confirm the data provided by me is correct.",
+                style: AppTextStyles.body(fontSize: 15, color: Colors.black),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Mark Attendance"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    log('Role Id: ${AuthManager().roleId}');
     return Scaffold(
       drawer: Drawer(
         child: Column(
@@ -106,7 +179,6 @@ class DashboardScreen extends StatelessWidget {
             children: [
               Container(
                 width: Get.width,
-                height: Get.height * 0.13,
                 padding: EdgeInsets.all(12),
                 margin: EdgeInsets.symmetric(horizontal: 15.0),
                 decoration: BoxDecoration(
@@ -123,21 +195,43 @@ class DashboardScreen extends StatelessWidget {
                     Text(
                       controller.storageService.read('name').toString(),
                       // Replace with dynamic teacher's name
-                      style:
-                      AppTextStyles.heading(fontSize: 25, color: Colors.white),
+                      style: AppTextStyles.heading(
+                          fontSize: 25, color: Colors.white),
                     ),
                     SizedBox(
                       height: 5.0,
                     ),
                     Obx(() => Text(
-                      controller.userRole.value,
-                      // Replace with dynamic teacher's name
-                      style:
-                      AppTextStyles.body(fontSize: 18, color: Colors.white),
-                    )),
+                          controller.userRole.value,
+                          // Replace with dynamic teacher's name
+                          style: AppTextStyles.body(
+                              fontSize: 18, color: Colors.white),
+                        )),
                     SizedBox(
                       height: 5.0,
                     ),
+                  Obx(()=>!controller.loading.value?  Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),color: Colors.white),
+                    child: Obx(
+                          () => DropdownButton<String>(
+                        isExpanded: true,padding: EdgeInsets.symmetric(horizontal: 10.0),underline: SizedBox(),
+                        hint: Text(
+                          'Select Branch ',
+                          style: AppTextStyles.heading(color: Colors.deepPurple,fontSize: 14),
+                        ),
+                        value: controller.selectedBranch.value.isNotEmpty?controller.selectedBranch.value:null,
+                        onChanged: (newValue) {
+                          controller.selectedBranch.value = newValue!;
+                        },
+                        items: controller.branchList.value.map((item) {
+                          return DropdownMenuItem<String>(
+                            value: item['code'].toString(),
+                            child: Text(item['value']),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ):Center(child: CupertinoActivityIndicator(),))
                     /*Row(
                   children: [
                     Icon(
@@ -158,11 +252,129 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(right: 0,top: -5,child: ClipOval(child: Image.asset('assets/8030890.png',height: 80,width: 80,),),)
+              Positioned(
+                right: 0,
+                top: -5,
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/8030890.png',
+                    height: 80,
+                    width: 80,
+                  ),
+                ),
+              )
             ],
           ),
           SizedBox(height: 40), // Space between name and buttons
+          controller.userRole.value == 'Branch Admin'? Container(
+            margin: EdgeInsets.symmetric(horizontal: 15.0),
+            child: Row(
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
 
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(12.0),
+                        decoration: BoxDecoration(
+                            color: Colors.deepPurple,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Total',
+                              style: AppTextStyles.heading(
+                                  fontSize: 12.0, color: Colors.white),
+                            ),
+                            SizedBox(
+                              height: 4.0,
+                            ),
+                            Obx(()=>controller.aData.isNotEmpty? Text(
+                              '${controller.aData['total']??"--"}',
+                              style: AppTextStyles.heading(
+                                  fontSize: 16.0, color: Colors.white),
+                            ):CupertinoActivityIndicator(color: Colors.white,)),
+                          ],
+                        ),
+                      ),
+                    )),
+                SizedBox(
+                  width: 10.0,
+                ),
+                Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(() => ClasslistTeacherScreen(
+                          onEvent: 'See Classwork',
+                        ));
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Container(
+                        padding: EdgeInsets.all(12.0),
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Present',
+                              style: AppTextStyles.heading(
+                                  fontSize: 12.0, color: Colors.white),
+                            ),
+                            SizedBox(
+                              height: 4.0,
+                            ),
+                            Obx(()=>controller.aData.isNotEmpty? Text(
+                              '${controller.aData['presentCount']??"--"}',
+                              style: AppTextStyles.heading(
+                                  fontSize: 16.0, color: Colors.white),
+                            ):CupertinoActivityIndicator(color: Colors.white,))
+                          ],
+                        ),
+                      ),
+                    )),
+                SizedBox(
+                  width: 10.0,
+                ),
+                Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Container(
+                        padding: EdgeInsets.all(12.0),
+                        decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Absent',
+                              style: AppTextStyles.heading(
+                                  fontSize: 12.0, color: Colors.white),
+                            ),
+                            SizedBox(
+                              height: 4.0,
+                            ),
+                            Obx(()=>controller.aData.isNotEmpty? Text(
+                              '${controller.aData['absentCount']??"--"}',
+                              style: AppTextStyles.heading(
+                                  fontSize: 16.0, color: Colors.white),
+                            ):CupertinoActivityIndicator(color: Colors.white,))
+                          ],
+                        ),
+                      ),
+                    )),
+              ],
+            ),
+          ):SizedBox(),
+          SizedBox(height: 20),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 15.0),
             child: Text(
@@ -221,54 +433,7 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 )
               : (controller.userRole.value == 'Branch Admin')
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              Get.to(() => ClassGridScreen(
-                                    onTap: () {
-                                      Get.to(() => StudentAttendance());
-                                    },
-                                  ));
-                            },
-                            child: options(
-                                'Student Attendance', 'assets/attendance.png'),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              Get.to(() => UploadCircularScreen());
-                            },
-                            child: options(
-                                'Upload Circular/Event', 'assets/notice.png'),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              //Get.to(() => MarkAttendanceBranchAdminScreen());
-                              Get.to(() => AttendanceOwn());
-                            },
-                            child: options(
-                                'Mark Your Attendance', 'assets/check.png'),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: SizedBox(),
-                        ),
-                      ],
-                    )
+                  ?branchAdminUi()
                   : (controller.userRole.value == 'Teacher')
                       ? teacherUI()
                       : (controller.userRole.value == 'Class Teacher')
@@ -487,7 +652,13 @@ class DashboardScreen extends StatelessWidget {
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    Get.to(() => AttendanceOwn());
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            MyCamera(onDataReceived: _myCallback),
+                      ),
+                    );
                     //Get.to(() => MyCamera());
                   },
                   child:
@@ -674,4 +845,60 @@ class DashboardScreen extends StatelessWidget {
           ),
         ],
       );
+
+
+  Widget branchAdminUi()=>Column(
+    children: [
+
+
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 1,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                Get.to(() => ClassGridScreen(
+                  onTap: () {
+                    Get.to(() => StudentAttendance());
+                  },
+                ));
+              },
+              child: options(
+                  'Student Attendance', 'assets/attendance.png'),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                Get.to(() => UploadCircularScreen());
+              },
+              child: options(
+                  'Upload Circular/Event', 'assets/notice.png'),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                //Get.to(() => MarkAttendanceBranchAdminScreen());
+                Get.to(() => AttendanceOwn());
+              },
+              child: options(
+                  'Mark Your Attendance', 'assets/check.png'),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: SizedBox(),
+          ),
+        ],
+      )
+    ],
+  );
 }
