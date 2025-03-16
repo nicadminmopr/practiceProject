@@ -105,7 +105,7 @@ class DashboardController extends GetxController {
       Future.value(
         [
       getBranches(),
-      getEmployeeData()
+
         ]
       );
 
@@ -163,17 +163,18 @@ class DashboardController extends GetxController {
       branchList.value = r;
       log('Branches ${branchList.value}');
       selectedBranch.value = branchList.first['code'].toString();
+      getEmployeeData(selectedBranch.value);
     } else {
       loading.value = false;
       print(response.reasonPhrase);
     }
   }
 
-  getEmployeeData()async{
+  getEmployeeData(code)async{
     var headers = {
       'Authorization': 'Bearer ${AuthManager().getAuthToken()}'
     };
-    var request = http.Request('GET', Uri.parse('http://147.79.66.224/madminapi/private/r/v1/employeeAttendanceData/branchWiseData/0'));
+    var request = http.Request('GET', Uri.parse('http://147.79.66.224/madminapi/private/r/v1/employeeAttendanceData/branchWiseData/$code'));
 
     request.headers.addAll(headers);
 

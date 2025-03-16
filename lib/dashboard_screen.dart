@@ -210,28 +210,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     SizedBox(
                       height: 5.0,
                     ),
-                  Obx(()=>!controller.loading.value?  Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),color: Colors.white),
-                    child: Obx(
-                          () => DropdownButton<String>(
-                        isExpanded: true,padding: EdgeInsets.symmetric(horizontal: 10.0),underline: SizedBox(),
-                        hint: Text(
-                          'Select Branch ',
-                          style: AppTextStyles.heading(color: Colors.deepPurple,fontSize: 14),
-                        ),
-                        value: controller.selectedBranch.value.isNotEmpty?controller.selectedBranch.value:null,
-                        onChanged: (newValue) {
-                          controller.selectedBranch.value = newValue!;
-                        },
-                        items: controller.branchList.value.map((item) {
-                          return DropdownMenuItem<String>(
-                            value: item['code'].toString(),
-                            child: Text(item['value']),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ):Center(child: CupertinoActivityIndicator(),))
+                    Obx(() => !controller.loading.value
+                        ? Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.0),
+                                color: Colors.white),
+                            child: Obx(
+                              () => DropdownButton<String>(
+                                isExpanded: true,
+                                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                underline: SizedBox(),
+                                hint: Text(
+                                  'Select Branch ',
+                                  style: AppTextStyles.heading(
+                                      color: Colors.deepPurple, fontSize: 14),
+                                ),
+                                value:
+                                    controller.selectedBranch.value.isNotEmpty
+                                        ? controller.selectedBranch.value
+                                        : null,
+                                onChanged: (newValue) {
+                                  controller.selectedBranch.value = newValue!;
+                                },
+                                items: controller.branchList.value.map((item) {
+                                  return DropdownMenuItem<String>(
+                                    value: item['code'].toString(),
+                                    child: Text(item['value']),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          )
+                        : Center(
+                            child: CupertinoActivityIndicator(),
+                          ))
                     /*Row(
                   children: [
                     Icon(
@@ -265,124 +277,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
               )
             ],
           ),
-          SizedBox(height: 40), // Space between name and buttons
-          controller.userRole.value == 'Branch Admin'? Container(
-            margin: EdgeInsets.symmetric(horizontal: 15.0),
-            child: Row(
-              children: [
-                Expanded(
-                    flex: 1,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
+          // SizedBox(height: 40), // Space between name and buttons
 
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(12.0),
-                        decoration: BoxDecoration(
-                            color: Colors.deepPurple,
-                            borderRadius: BorderRadius.circular(8.0)),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Total',
-                              style: AppTextStyles.heading(
-                                  fontSize: 12.0, color: Colors.white),
-                            ),
-                            SizedBox(
-                              height: 4.0,
-                            ),
-                            Obx(()=>controller.aData.isNotEmpty? Text(
-                              '${controller.aData['total']??"--"}',
-                              style: AppTextStyles.heading(
-                                  fontSize: 16.0, color: Colors.white),
-                            ):CupertinoActivityIndicator(color: Colors.white,)),
-                          ],
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Expanded(
-                    flex: 1,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(() => ClasslistTeacherScreen(
-                          onEvent: 'See Classwork',
-                        ));
-                      },
-                      behavior: HitTestBehavior.opaque,
-                      child: Container(
-                        padding: EdgeInsets.all(12.0),
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(8.0)),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Present',
-                              style: AppTextStyles.heading(
-                                  fontSize: 12.0, color: Colors.white),
-                            ),
-                            SizedBox(
-                              height: 4.0,
-                            ),
-                            Obx(()=>controller.aData.isNotEmpty? Text(
-                              '${controller.aData['presentCount']??"--"}',
-                              style: AppTextStyles.heading(
-                                  fontSize: 16.0, color: Colors.white),
-                            ):CupertinoActivityIndicator(color: Colors.white,))
-                          ],
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Expanded(
-                    flex: 1,
-                    child: GestureDetector(
-                      onTap: () {
-
-                      },
-                      behavior: HitTestBehavior.opaque,
-                      child: Container(
-                        padding: EdgeInsets.all(12.0),
-                        decoration: BoxDecoration(
-                            color: Colors.redAccent,
-                            borderRadius: BorderRadius.circular(8.0)),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Absent',
-                              style: AppTextStyles.heading(
-                                  fontSize: 12.0, color: Colors.white),
-                            ),
-                            SizedBox(
-                              height: 4.0,
-                            ),
-                            Obx(()=>controller.aData.isNotEmpty? Text(
-                              '${controller.aData['absentCount']??"--"}',
-                              style: AppTextStyles.heading(
-                                  fontSize: 16.0, color: Colors.white),
-                            ):CupertinoActivityIndicator(color: Colors.white,))
-                          ],
-                        ),
-                      ),
-                    )),
-              ],
-            ),
-          ):SizedBox(),
           SizedBox(height: 20),
-          Container(
+          /*Container(
             margin: EdgeInsets.symmetric(horizontal: 15.0),
             child: Text(
               'Explore',
               style: AppTextStyles.heading(fontSize: 15, color: Colors.black),
             ),
-          ),
-          SizedBox(height: 20),
+          ),*/
+
           controller.userRole.value == 'School Admin'
               ? Row(
                   children: [
@@ -433,7 +338,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 )
               : (controller.userRole.value == 'Branch Admin')
-                  ?branchAdminUi()
+                  ? branchAdminUI()
                   : (controller.userRole.value == 'Teacher')
                       ? teacherUI()
                       : (controller.userRole.value == 'Class Teacher')
@@ -846,59 +751,375 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
       );
 
-
-  Widget branchAdminUi()=>Column(
-    children: [
-
-
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget branchAdminUi() => Column(
         children: [
-          Expanded(
-            flex: 1,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                Get.to(() => ClassGridScreen(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    Get.to(() => StudentAttendance());
+                    Get.to(() => ClassGridScreen(
+                          onTap: () {
+                            Get.to(() => StudentAttendance());
+                          },
+                        ));
                   },
-                ));
-              },
-              child: options(
-                  'Student Attendance', 'assets/attendance.png'),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                Get.to(() => UploadCircularScreen());
-              },
-              child: options(
-                  'Upload Circular/Event', 'assets/notice.png'),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                //Get.to(() => MarkAttendanceBranchAdminScreen());
-                Get.to(() => AttendanceOwn());
-              },
-              child: options(
-                  'Mark Your Attendance', 'assets/check.png'),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: SizedBox(),
-          ),
+                  child: options('Student Attendance', 'assets/attendance.png'),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Get.to(() => UploadCircularScreen());
+                  },
+                  child: options('Upload Circular/Event', 'assets/notice.png'),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    //Get.to(() => MarkAttendanceBranchAdminScreen());
+                    Get.to(() => AttendanceOwn());
+                  },
+                  child: options('Mark Your Attendance', 'assets/check.png'),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: SizedBox(),
+              ),
+            ],
+          )
         ],
-      )
-    ],
-  );
+      );
+
+  Widget branchAdminUI() => Container(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 15.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "Employee Attendance",
+                        style: AppTextStyles.heading(
+                            fontSize: 15.0, color: Colors.black),
+                      ),
+                      Spacer(),
+                      Text(
+                        "View All",
+                        style: AppTextStyles.heading(
+                                fontSize: 10.0, color: Colors.blue)
+                            .copyWith(decoration: TextDecoration.underline),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  controller.userRole.value == 'Branch Admin'
+                      ? Container(
+                          margin: EdgeInsets.symmetric(horizontal: 0.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  flex: 1,
+                                  child: GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () {},
+                                    child: Container(
+                                      padding: EdgeInsets.all(12.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.deepPurple,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Total',
+                                            style: AppTextStyles.heading(
+                                                fontSize: 12.0,
+                                                color: Colors.white),
+                                          ),
+                                          SizedBox(
+                                            height: 4.0,
+                                          ),
+                                          Obx(() => controller.aData.isNotEmpty
+                                              ? Text(
+                                                  '${controller.aData['total'] ?? "--"}',
+                                                  style: AppTextStyles.heading(
+                                                      fontSize: 16.0,
+                                                      color: Colors.white),
+                                                )
+                                              : CupertinoActivityIndicator(
+                                                  color: Colors.white,
+                                                )),
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Expanded(
+                                  flex: 1,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Get.to(() => ClasslistTeacherScreen(
+                                            onEvent: 'See Classwork',
+                                          ));
+                                    },
+                                    behavior: HitTestBehavior.opaque,
+                                    child: Container(
+                                      padding: EdgeInsets.all(12.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Present',
+                                            style: AppTextStyles.heading(
+                                                fontSize: 12.0,
+                                                color: Colors.white),
+                                          ),
+                                          SizedBox(
+                                            height: 4.0,
+                                          ),
+                                          Obx(() => controller.aData.isNotEmpty
+                                              ? Text(
+                                                  '${controller.aData['presentCount'] ?? "--"}',
+                                                  style: AppTextStyles.heading(
+                                                      fontSize: 16.0,
+                                                      color: Colors.white),
+                                                )
+                                              : CupertinoActivityIndicator(
+                                                  color: Colors.white,
+                                                ))
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Expanded(
+                                  flex: 1,
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    behavior: HitTestBehavior.opaque,
+                                    child: Container(
+                                      padding: EdgeInsets.all(12.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.redAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Absent',
+                                            style: AppTextStyles.heading(
+                                                fontSize: 12.0,
+                                                color: Colors.white),
+                                          ),
+                                          SizedBox(
+                                            height: 4.0,
+                                          ),
+                                          Obx(() => controller.aData.isNotEmpty
+                                              ? Text(
+                                                  '${controller.aData['absentCount'] ?? "--"}',
+                                                  style: AppTextStyles.heading(
+                                                      fontSize: 16.0,
+                                                      color: Colors.white),
+                                                )
+                                              : CupertinoActivityIndicator(
+                                                  color: Colors.white,
+                                                ))
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        )
+                      : SizedBox(),
+                ],
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 15.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "Student  Attendance",
+                        style: AppTextStyles.heading(
+                            fontSize: 15.0, color: Colors.black),
+                      ),
+                      Spacer(),
+                      Text(
+                        "View All",
+                        style: AppTextStyles.heading(
+                                fontSize: 10.0, color: Colors.blue)
+                            .copyWith(decoration: TextDecoration.underline),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  controller.userRole.value == 'Branch Admin'
+                      ? Container(
+                          margin: EdgeInsets.symmetric(horizontal: 0.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  flex: 1,
+                                  child: GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () {},
+                                    child: Container(
+                                      padding: EdgeInsets.all(12.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.deepPurple,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Total',
+                                            style: AppTextStyles.heading(
+                                                fontSize: 12.0,
+                                                color: Colors.white),
+                                          ),
+                                          SizedBox(
+                                            height: 4.0,
+                                          ),
+                                          Obx(() => controller.aData.isNotEmpty
+                                              ? Text(
+                                                  '${controller.aData['total'] ?? "--"}',
+                                                  style: AppTextStyles.heading(
+                                                      fontSize: 16.0,
+                                                      color: Colors.white),
+                                                )
+                                              : CupertinoActivityIndicator(
+                                                  color: Colors.white,
+                                                )),
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Expanded(
+                                  flex: 1,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Get.to(() => ClasslistTeacherScreen(
+                                            onEvent: 'See Classwork',
+                                          ));
+                                    },
+                                    behavior: HitTestBehavior.opaque,
+                                    child: Container(
+                                      padding: EdgeInsets.all(12.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Present',
+                                            style: AppTextStyles.heading(
+                                                fontSize: 12.0,
+                                                color: Colors.white),
+                                          ),
+                                          SizedBox(
+                                            height: 4.0,
+                                          ),
+                                          Obx(() => controller.aData.isNotEmpty
+                                              ? Text(
+                                                  '${controller.aData['presentCount'] ?? "--"}',
+                                                  style: AppTextStyles.heading(
+                                                      fontSize: 16.0,
+                                                      color: Colors.white),
+                                                )
+                                              : CupertinoActivityIndicator(
+                                                  color: Colors.white,
+                                                ))
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Expanded(
+                                  flex: 1,
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    behavior: HitTestBehavior.opaque,
+                                    child: Container(
+                                      padding: EdgeInsets.all(12.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.redAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Absent',
+                                            style: AppTextStyles.heading(
+                                                fontSize: 12.0,
+                                                color: Colors.white),
+                                          ),
+                                          SizedBox(
+                                            height: 4.0,
+                                          ),
+                                          Obx(() => controller.aData.isNotEmpty
+                                              ? Text(
+                                                  '${controller.aData['absentCount'] ?? "--"}',
+                                                  style: AppTextStyles.heading(
+                                                      fontSize: 16.0,
+                                                      color: Colors.white),
+                                                )
+                                              : CupertinoActivityIndicator(
+                                                  color: Colors.white,
+                                                ))
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        )
+                      : SizedBox(),
+                ],
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+            )
+          ],
+        ),
+      );
 }
