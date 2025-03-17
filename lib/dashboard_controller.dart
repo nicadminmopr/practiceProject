@@ -258,4 +258,6 @@ class DashboardController extends GetxController {
       print(response.reasonPhrase);
     }
   }
+
+
 }
