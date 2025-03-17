@@ -975,12 +975,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             fontSize: 15.0, color: Colors.black),
                       ),
                       Spacer(),
-                      Text(
-                        "View All",
-                        style: AppTextStyles.heading(
-                                fontSize: 10.0, color: Colors.blue)
-                            .copyWith(decoration: TextDecoration.underline),
-                      )
+
                     ],
                   ),
                   SizedBox(
@@ -1015,7 +1010,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           ),
                                           Obx(() => controller.aData.isNotEmpty
                                               ? Text(
-                                                  '${controller.aData['total'] ?? "--"}',
+                                                  '${controller.studentAttendanceData['total'] ?? "--"}',
                                                   style: AppTextStyles.heading(
                                                       fontSize: 16.0,
                                                       color: Colors.white),
@@ -1058,7 +1053,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           ),
                                           Obx(() => controller.aData.isNotEmpty
                                               ? Text(
-                                                  '${controller.aData['presentCount'] ?? "--"}',
+                                                  '${controller.studentAttendanceData['presentCount'] ?? "--"}',
                                                   style: AppTextStyles.heading(
                                                       fontSize: 16.0,
                                                       color: Colors.white),
@@ -1097,7 +1092,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           ),
                                           Obx(() => controller.aData.isNotEmpty
                                               ? Text(
-                                                  '${controller.aData['absentCount'] ?? "--"}',
+                                                  '${controller.studentAttendanceData['absentCount'] ?? "--"}',
                                                   style: AppTextStyles.heading(
                                                       fontSize: 16.0,
                                                       color: Colors.white),
@@ -1118,7 +1113,118 @@ class _DashboardScreenState extends State<DashboardScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
               ),
-            )
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 15.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "Revenue",
+                        style: AppTextStyles.heading(
+                            fontSize: 15.0, color: Colors.black),
+                      ),
+                      Spacer(),
+
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  controller.userRole.value == 'Branch Admin'
+                      ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 0.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {},
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 12,vertical: 20),
+                                decoration: BoxDecoration(
+                                    color: Colors.deepPurple,
+                                    borderRadius:
+                                    BorderRadius.circular(8.0)),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'Total Amount',
+                                      style: AppTextStyles.heading(
+                                          fontSize: 12.0,
+                                          color: Colors.white),
+                                    ),
+                                    SizedBox(
+                                      height: 4.0,
+                                    ),
+                                    Obx(() => controller.feeReceiptData.isNotEmpty
+                                        ? Text(
+                                      '₹ ${controller.feeReceiptData.value ?? "--"}',
+                                      style: AppTextStyles.heading(
+                                          fontSize: 16.0,
+                                          color: Colors.white),
+                                    )
+                                        : CupertinoActivityIndicator(
+                                      color: Colors.white,
+                                    )),
+                                  ],
+                                ),
+                              ),
+                            )),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {},
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 12,vertical: 20),
+                                decoration: BoxDecoration(
+                                    color: Colors.deepPurple,
+                                    borderRadius:
+                                    BorderRadius.circular(8.0)),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'Expenditure',
+                                      style: AppTextStyles.heading(
+                                          fontSize: 12.0,
+                                          color: Colors.white),
+                                    ),
+                                    SizedBox(
+                                      height: 4.0,
+                                    ),
+                                    Obx(() => controller.expenditureData.isNotEmpty
+                                        ? Text(
+                                      '₹ ${controller.expenditureData.value ?? "--"}',
+                                      style: AppTextStyles.heading(
+                                          fontSize: 16.0,
+                                          color: Colors.white),
+                                    )
+                                        : CupertinoActivityIndicator(
+                                      color: Colors.white,
+                                    )),
+                                  ],
+                                ),
+                              ),
+                            )),
+                      ],
+                    ),
+                  )
+                      : SizedBox(),
+                ],
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+            ),
           ],
         ),
       );
