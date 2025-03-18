@@ -199,16 +199,20 @@ class MarkAttendanceController extends GetxController {
     request.body = json.encode(
         {"longitude": lat.value, "latitude": long.value, "photo": base64Image});
     log('Body ${request.body}');
+
     request.headers.addAll(headers);
     log('Headers ${request.headers}');
     http.StreamedResponse response = await request.send();
     log('Code ${response.statusCode.toString()}');
+    var d = jsonDecode(await response.stream.bytesToString());
+    log('Message ${d['message']}');
     if (response.statusCode == 200) {
       loading.value = false;
       ScaffoldMessenger.of(Get.context!)
           .showSnackBar(SnackBar(content: Text('Marked Successfully')));
     } else {
       loading.value = false;
+
       ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
           content: Text('Image size too big . Increase Size at server side')));
     }

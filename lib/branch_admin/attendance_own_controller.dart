@@ -201,13 +201,15 @@ class AttendanceOwnController extends GetxController {
     log('Headers ${request.headers}');
     http.StreamedResponse response = await request.send();
     log('Code ${response.statusCode.toString()}');
+    var d = jsonDecode(await response.stream.bytesToString());
+    log('Message ${d}');
     if (response.statusCode == 200) {
       loading.value = false;
       Get.dialog(
         barrierDismissible: false,
         AlertDialog(
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -234,17 +236,21 @@ class AttendanceOwnController extends GetxController {
                   Get.offAll(() => DashboardScreen());
                 },
                 child:
-                Text("Back to Home", style: TextStyle(color: Colors.white)),
+                    Text("Back to Home", style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
         ),
       );
-
     } else {
       loading.value = false;
-      ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
-          content: Text('Image size too big . Increase Size at server side')));
+      if (d != null && d['message']) {
+        ScaffoldMessenger.of(Get.context!)
+            .showSnackBar(SnackBar(content: Text('${d['message']}')));
+      } else {
+        ScaffoldMessenger.of(Get.context!)
+            .showSnackBar(SnackBar(content: Text('Something went wrong')));
+      }
     }
   }
 }
