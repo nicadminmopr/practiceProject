@@ -4,10 +4,12 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:practiceproject/utils/apptextstyles.dart';
 import 'package:practiceproject/utils/custom_appbar.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/Base64Image.dart';
 import '../utils/singleton.dart';
 
 class EmployeeDirectory extends StatefulWidget {
@@ -99,6 +101,7 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
       body: Obx(() => !loading.value
           ? data.isNotEmpty
               ? ListView.separated(
+                  padding: EdgeInsets.only(top: 20.0),
                   itemCount: data.length,
                   itemBuilder: (context, int index) {
                     var d = data[index];
@@ -117,16 +120,89 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
                             ),
                           )
                         : (type.value == 'present')
-                            ? ListTile(
-                                leading: Image.asset(
-                                  'assets/profile.png',
-                                  height: 35,
-                                  width: 35,
-                                ),
-                                title: Text(
-                                  d['name'],
-                                  style: AppTextStyles.body(
-                                      color: Colors.black, fontSize: 14),
+                            ? Container(
+                                margin: EdgeInsets.symmetric(horizontal: 15),
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        12), // Rounded corners
+                                  ),
+                                  elevation: 4, // Shadow effect
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Row(
+                                      children: [
+                                        // Circular photo
+                                        CircleAvatar(
+                                          radius: 30,
+                                          backgroundImage: MemoryImage(
+                                              base64Decode(d['inPhoto'])),
+                                        ),
+                                        const SizedBox(width: 16),
+
+                                        // Name, In Time, Out Time, Date
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                d['name'],
+                                                style: AppTextStyles.heading(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: "In Time:  ",
+                                                      style: AppTextStyles.body(
+                                                          color: Colors.grey,
+                                                          fontSize: 12),
+                                                    ),
+                                                    TextSpan(
+                                                      text:formatTime (d['inTime']),
+                                                      style: AppTextStyles.heading(
+                                                          color: Colors.black,
+                                                          fontSize: 14),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: "Out Time:  ",
+                                                      style: AppTextStyles.body(
+                                                          color: Colors.grey,
+                                                          fontSize: 12),
+                                                    ),
+                                                    TextSpan(
+                                                      text:formatTime (d['outTime']),
+                                                      style: AppTextStyles.heading(
+                                                          color: Colors.black,
+                                                          fontSize: 14),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                "Date: ${d['date']}",
+                                                style: AppTextStyles.body(
+                                                    color: Colors.blueAccent,
+                                                    fontSize: 13),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               )
                             : SizedBox();
@@ -142,5 +218,15 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
               child: CupertinoActivityIndicator(),
             )),
     );
+  }
+
+
+  String formatTime(String time) {
+    try {
+      final parsedTime = DateFormat("HH:mm:ss.SSS").parse(time);
+      return DateFormat("hh:mm a").format(parsedTime); // Converts to AM/PM
+    } catch (e) {
+      return time; // Fallback if parsing fails
+    }
   }
 }

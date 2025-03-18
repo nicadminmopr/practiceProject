@@ -65,7 +65,7 @@ class _MyAppState extends State<MyCamera> {
     controller = FaceCameraController(
       autoCapture: true,
       defaultCameraLens: CameraLens.front,
-      orientation: CameraOrientation.landscapeLeft,
+      orientation: CameraOrientation.portraitUp,
       imageResolution: ImageResolution.low,
       onCapture: (File? image) {
         setState(() => _capturedImage = image);
@@ -91,9 +91,9 @@ class _MyAppState extends State<MyCamera> {
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
-                  RotatedBox(quarterTurns: 3,child: Image.file(
+                  RotatedBox(quarterTurns: 0,child: Image.file(
                     _capturedImage!,
-                    width: double.maxFinite,
+                    width: double.maxFinite,height: double.maxFinite,
                     fit: BoxFit.fitWidth,
                   ),),
                   Positioned(bottom: kToolbarHeight,child: MaterialButton(color: Colors.green,minWidth: 300.0,height: 48.0,
