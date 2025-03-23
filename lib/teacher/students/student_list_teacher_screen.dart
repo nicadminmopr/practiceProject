@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,46 +7,6 @@ import 'package:practiceproject/teacher/students/student_list_teacher_controller
 
 import '../../utils/apptextstyles.dart';
 
-// Model for a Student
-class Student {
-  final int id;
-  final String name;
-  String attendance; // 'Present' or 'Absent'
-
-  Student({required this.id, required this.name, this.attendance = 'Absent'});
-}
-
-// Controller for managing attendance
-class AttendanceController extends GetxController {
-  var students = <Student>[].obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    fetchStudents();
-  }
-
-  // Simulating fetching students
-  void fetchStudents() {
-    students.value = [
-      Student(id: 1, name: 'Alice'),
-      Student(id: 2, name: 'Bob'),
-      Student(id: 3, name: 'Charlie'),
-    ];
-  }
-
-  // Update attendance for a student
-  void updateAttendance(int id, String attendance) {
-    students.firstWhere((student) => student.id == id).attendance = attendance;
-    students.refresh();
-  }
-
-  // Save attendance
-  void saveAttendance() {
-    // Logic to save attendance to a database or API
-    Get.snackbar('Success', 'Attendance saved successfully!');
-  }
-}
 
 // UI Screen for Marking Attendance
 class StudentListTeacherScreen extends StatelessWidget {
@@ -52,6 +14,7 @@ class StudentListTeacherScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('Class Id: ${Get.arguments['classId']}');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -126,21 +89,19 @@ class StudentListTeacherScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Obx(() => MaterialButton(
-                      color: controller.attendance.isNotEmpty
-                          ? Colors.black
-                          : Colors.grey,
-                      height: 48,
-                      minWidth: 300.0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0)),
-                      onPressed: controller.submitAttendance,
-                      child: Text(
-                        'Save Attendance',
-                        style: AppTextStyles.heading(
-                            fontSize: 15, color: Colors.white),
-                      ),
-                    )),
+                child: MaterialButton(
+                  color: Colors.black,
+                  height: 48,
+                  minWidth: 300.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0)),
+                  onPressed: controller.submitAttendance,
+                  child: Text(
+                    'Save Attendance',
+                    style: AppTextStyles.heading(
+                        fontSize: 15, color: Colors.white),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 20.0,

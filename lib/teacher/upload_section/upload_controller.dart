@@ -61,7 +61,7 @@ class UploadController extends GetxController {
         "workTitle": titleController.text,
         "workContent": contentController.text
       };
-      log('Body Printed: ${body}');
+      log('Body Printed: ${jsonEncode(body)}');
       String url = 'http://147.79.66.224/madminapi/private/v1/homework';
       uploadWork(url, body);
     } else if (Get.arguments['title'] == 'Upload Classwork') {
@@ -72,7 +72,7 @@ class UploadController extends GetxController {
         "workTitle": titleController.text,
         "workContent": contentController.text
       };
-      log('Body Printed: ${body}');
+      log('Body Printed: ${jsonEncode(body)}');
       String url = 'http://147.79.66.224/madminapi/private/v1/classwork';
       uploadWork(url, body);
     } else if (Get.arguments['title'] == 'Upload Assignment') {
@@ -83,13 +83,16 @@ class UploadController extends GetxController {
         "workTitle": titleController.text,
         "workContent": contentController.text
       };
-      log('Body Printed: ${body}');
+      log('Body Printed: ${jsonEncode(body)}');
       String url = 'http://147.79.66.224/madminapi/private/v1/assignment';
       uploadWork(url, body);
     }
   }
 
   uploadWork(url, body) async {
+    log('Body ${jsonEncode(body)}');
+    log('Url ${url}');
+    log('Header ${AuthManager().getAuthToken()}');
     loading.value = true;
     var headers = {
       'Content-Type': 'application/json',

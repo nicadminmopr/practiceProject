@@ -15,6 +15,17 @@ class StudentListTeacherController extends GetxController {
   RxBool loading = false.obs;
   RxBool marking = false.obs;
   var attendance = <int, bool>{}.obs;
+  void setStudentList(List<dynamic> students) {
+    //studentList.assignAll(students);
+
+    // Initialize attendance map for all students to false
+    for (var student in students) {
+      final id = student['studentId'];
+      if (!attendance.containsKey(id)) {
+        attendance[id] = false;
+      }
+    }
+  }
 
   void toggleAttendance(int studentId, bool isPresent) {
     attendance[studentId] = isPresent;
@@ -37,6 +48,7 @@ class StudentListTeacherController extends GetxController {
       var r = await response.stream.bytesToString();
       var d = jsonDecode(r);
       studentList.value = d;
+      setStudentList(studentList.value);
     } else {
       loading.value = false;
       ScaffoldMessenger.of(Get.context!)
@@ -106,12 +118,8 @@ class StudentListTeacherController extends GetxController {
     }
   }
 
-  void submitAttendance() {
-    if (attendance.length != studentList.length) {
-      ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(content: Text('Mark All Students Attendance')));
-      return;
-    }
+  /*void submitAttendance() {
+
     final now = DateTime.now();
     final formattedDate = DateFormat('d-M-yyyy').format(now).split('-');
 
@@ -126,8 +134,26 @@ class StudentListTeacherController extends GetxController {
             })
         .toList();
     log('body sent is $attendanceList');
+    //saveAttendance(attendanceList);
+  }*/
+
+  void submitAttendance() {
+    final now = DateTime.now();
+    final formattedDate = DateFormat('d-M-yyyy').format(now).split('-');
+
+    final List<Map<String, dynamic>> attendanceList = attendance.entries
+        .map((entry) => {
+      "studentId": entry.key,
+      "isPresent": entry.value, // true or false based on marking
+      "classId":"${Get.arguments['classId']}",
+      "sectionId": null,
+    })
+        .toList();
+
+    log('body sent is ${jsonEncode(attendanceList)}');
     saveAttendance(attendanceList);
-  } // Replace with API call
+  }
+// Replace with API call
 
   @override
   void onInit() {

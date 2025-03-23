@@ -10,6 +10,7 @@ class AuthManager {
   String? authToken;
   String? username;
   String? roleId;
+  String? designation;
 
   void setAuthToken(String token) {
     authToken = token;
@@ -19,25 +20,34 @@ class AuthManager {
     username = name;
   }
 
+  void setDesignation(String name) {
+    designation = name;
+  }
+
   String? getAuthToken() {
     return authToken;
+  }
+
+  String? getDesignation() {
+    return designation;
   }
 
   String? getUsername() {
     return username;
   }
+
   void setRoleId(String roleI) {
     roleId = roleI;
   }
 
   String? getRoleId() {
-    return roleId ;
+    return roleId;
   }
-
 
   void clear() {
     authToken = null;
     username = null;
     roleId = null;
+    designation = null;
   }
 }

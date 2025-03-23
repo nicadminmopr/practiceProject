@@ -166,6 +166,7 @@ class LoginScreen extends StatelessWidget {
                       'password': controller.passwordController.text
                     });*/
                                       if (formKey.currentState!.validate()) {
+                                        FocusManager.instance.primaryFocus?.unfocus();
                                         var body = {
                                           "username":
                                               controller.emailController.text,

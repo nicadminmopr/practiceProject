@@ -2,6 +2,7 @@ import 'package:face_camera/face_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:practiceproject/teacher/teacher_dashboard.dart';
 import 'package:practiceproject/utils/singleton.dart';
 import 'package:practiceproject/utils/storage_service.dart';
 
@@ -56,6 +57,7 @@ class MyClass extends StatelessWidget {
               return isLoggedIn ? DashboardScreen() : LoginScreen();
             }
           }),
+
     );
   }
 }

@@ -244,7 +244,7 @@ class AttendanceOwnController extends GetxController {
       );
     } else {
       loading.value = false;
-      if (d != null && d['message']) {
+      if (d != null && d['message']!=null) {
         ScaffoldMessenger.of(Get.context!)
             .showSnackBar(SnackBar(content: Text('${d['message']}')));
       } else {

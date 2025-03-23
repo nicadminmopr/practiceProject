@@ -34,18 +34,14 @@ class LoginController extends GetxController {
     if (response.statusCode == 200) {
       isLoading.value = false;
       var responseApi = jsonDecode(await response.stream.bytesToString());
-      if (responseApi['roleId'].toString() == '19') {
 
-        await storageService.write('userType', 'teacher');
-      } else if (responseApi['roleId'].toString() == '3') {
-
-      } else if (responseApi['roleId'].toString() == '2') {
-
-      }
 
       await storageService.write('name', responseApi['name'].toString());
       await storageService.write('roleId', responseApi['roleId'].toString());
+      await storageService.write('designation', responseApi['designation']??"--");
       AuthManager().setRoleId(responseApi['roleId'].toString());
+      AuthManager().setDesignation(responseApi['designation']??"--");
+      AuthManager().setUsername(responseApi['name']??"--");
       Map<String, String> headers = response.headers;
 
       print('Response Headers:');
@@ -63,5 +59,13 @@ class LoginController extends GetxController {
       ScaffoldMessenger.of(Get.context!)
           .showSnackBar(SnackBar(content: Text('Something went wrong')));
     }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
   }
 }
