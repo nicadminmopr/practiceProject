@@ -62,8 +62,9 @@ class _ViewScreenState extends State<ViewScreen> {
       log('1');
       setState(() {
         title.value = 'Classwork';
+
         url.value =
-            'http://147.79.66.224/madminapi/private/v1/r/classworkData/${body['subjectId'].toString()}/${body['classId'].toString()}/0';
+            'http://147.79.66.224/madminapi/private/v1/r/classworkData/getRecentClassWork/${body['classId'].toString()}/${body['subjectId'].toString()}/0';
       });
       getData(url.value);
     } else if (body['title'] == 'See Homework') {
@@ -71,7 +72,7 @@ class _ViewScreenState extends State<ViewScreen> {
       setState(() {
         title.value = 'Homework';
         url.value =
-            'http://147.79.66.224/madminapi/private/v1/r/homeworkData/${body['subjectId'].toString()}/${body['classId'].toString()}/0';
+            'http://147.79.66.224/madminapi/private/v1/r/homeworkData/getRecentClassWork/${body['classId'].toString()}/${body['subjectId'].toString()}/0';
       });
       getData(url.value);
     }
@@ -97,42 +98,50 @@ class _ViewScreenState extends State<ViewScreen> {
                       ),
                       Text(
                         'Title',
-                        style: AppTextStyles.body(color: Colors.grey).copyWith(fontSize: 12),
+                        style: AppTextStyles.body(color: Colors.grey)
+                            .copyWith(fontSize: 12),
                       ),
                       SizedBox(
                         height: 7,
                       ),
                       Text(
-                        screenData.value['workTitle']??"",
-                        style: AppTextStyles.body(color: Colors.black).copyWith(fontSize: 14),
+                        screenData.value['workTitle'] ?? "",
+                        style: AppTextStyles.body(color: Colors.black)
+                            .copyWith(fontSize: 14),
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       Text(
                         'Description',
-                        style: AppTextStyles.body(color: Colors.grey).copyWith(fontSize: 12),
+                        style: AppTextStyles.body(color: Colors.grey)
+                            .copyWith(fontSize: 12),
                       ),
                       SizedBox(
                         height: 7,
                       ),
                       Text(
-                        screenData.value['workContent']??"",
-                        style: AppTextStyles.body(color: Colors.black).copyWith(fontSize: 14),
+                        screenData.value['workContent'] ?? "",
+                        style: AppTextStyles.body(color: Colors.black)
+                            .copyWith(fontSize: 14),
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       Text(
                         'Date',
-                        style: AppTextStyles.body(color: Colors.grey).copyWith(fontSize: 12),
+                        style: AppTextStyles.body(color: Colors.grey)
+                            .copyWith(fontSize: 12),
                       ),
                       SizedBox(
                         height: 7,
                       ),
                       Text(
-                        DateFormat('dd-MM-yyyy').format(DateTime.parse(screenData.value['workSubmissionDate']))    ,
-                        style: AppTextStyles.body(color: Colors.black).copyWith(fontSize: 14),
+                        DateFormat('dd-MM-yyyy').format(DateTime.parse(
+                            screenData.value['classworkDate'] ??
+                                DateTime.now().toString())),
+                        style: AppTextStyles.body(color: Colors.black)
+                            .copyWith(fontSize: 14),
                       ),
                     ],
                   ),

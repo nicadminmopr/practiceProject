@@ -104,7 +104,9 @@ class UploadController extends GetxController {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
-
+var d = await response.stream.bytesToString();
+var r  = jsonDecode(d);
+log('D: ${d}');
     if (response.statusCode == 200) {
       loading.value = false;
       ScaffoldMessenger.of(Get.context!)
@@ -148,8 +150,11 @@ class UploadController extends GetxController {
       );
     } else {
       loading.value = false;
-      ScaffoldMessenger.of(Get.context!)
-          .showSnackBar(SnackBar(content: Text('Something went wrong')));
+      if(r!=null && r['message']!=null){
+        ScaffoldMessenger.of(Get.context!)
+            .showSnackBar(SnackBar(content: Text(r['message']??"Something went wrong"),backgroundColor: Colors.red,));
+      }
+
     }
   }
 }

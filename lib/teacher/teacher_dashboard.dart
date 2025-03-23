@@ -394,6 +394,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
               Get.find<DashboardController>().showLogoutDialog();
             },
           ),
+          SizedBox(height: kBottomNavigationBarHeight,)
         ],
       ),
     );
