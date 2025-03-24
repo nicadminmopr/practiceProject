@@ -116,6 +116,7 @@ class _SubjectTeacherScreenState extends State<SubjectTeacherScreen> {
                                     'classId':
                                         Get.arguments['classId'].toString(),
                                     'subjectId': className['code'].toString(),
+                                    'subjectName':className['value']??""
                                   });
                                 } else {
                                   Get.to(

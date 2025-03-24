@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:practiceproject/utils/apptextstyles.dart';
 
@@ -80,6 +81,7 @@ class _ViewScreenState extends State<ViewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('Subject Name : ${Get.arguments['subjectName']}');
     return Scaffold(
       appBar: CustomAppBar(title: title.value),
       backgroundColor: Colors.white,
@@ -89,61 +91,109 @@ class _ViewScreenState extends State<ViewScreen> {
                   screenData.value['workContent'] != null
               ? Padding(
                   padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'Title',
-                        style: AppTextStyles.body(color: Colors.grey)
-                            .copyWith(fontSize: 12),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Text(
-                        screenData.value['workTitle'] ?? "",
-                        style: AppTextStyles.body(color: Colors.black)
-                            .copyWith(fontSize: 14),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'Description',
-                        style: AppTextStyles.body(color: Colors.grey)
-                            .copyWith(fontSize: 12),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Text(
-                        screenData.value['workContent'] ?? "",
-                        style: AppTextStyles.body(color: Colors.black)
-                            .copyWith(fontSize: 14),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'Date',
-                        style: AppTextStyles.body(color: Colors.grey)
-                            .copyWith(fontSize: 12),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Text(
-                        DateFormat('dd-MM-yyyy').format(DateTime.parse(
-                            screenData.value['classworkDate'] ??
-                                DateTime.now().toString())),
-                        style: AppTextStyles.body(color: Colors.black)
-                            .copyWith(fontSize: 14),
-                      ),
-                    ],
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          height: 45,
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 10),
+                          child: Text(
+                            '${Get.arguments['subjectName'] ?? "Subject"}',
+                            style: AppTextStyles.heading(
+                                color: Colors.white, fontSize: 14),
+                          ),
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(12.0),
+                                  topRight: Radius.circular(12.0))),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                    text: 'Title: ',
+                                    style: GoogleFonts.montserrat(
+                                        color: Colors.grey,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500)),
+                                TextSpan(
+                                    text: screenData.value['workTitle'] ?? "",
+                                    style: GoogleFonts.montserrat(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600)),
+                              ])),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                        text: 'Description: ',
+                                        style: GoogleFonts.montserrat(
+                                            color: Colors.grey,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500)),
+                                    TextSpan(
+                                        text: screenData.value['workContent'] ?? "",
+                                        style: GoogleFonts.montserrat(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600)),
+                                  ])),
+
+                              SizedBox(
+                                height: 8,
+                              ),
+                              RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                        text: 'Date: ',
+                                        style: GoogleFonts.montserrat(
+                                            color: Colors.grey,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500)),
+                                    TextSpan(
+                                        text: DateFormat('dd-MM-yyyy').format(DateTime.parse(
+                                            screenData.value['classworkDate'] ??
+                                                DateTime.now().toString())),
+                                        style: GoogleFonts.montserrat(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600)),
+                                  ])),
+
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 1.0,
+                              spreadRadius: 1.0,
+                              offset: Offset(1.0, 1.0))
+                        ]),
                   ),
                 )
               : Center(

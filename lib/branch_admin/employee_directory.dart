@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:practiceproject/utils/apptextstyles.dart';
 import 'package:practiceproject/utils/custom_appbar.dart';
@@ -130,76 +131,229 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
                                   elevation: 4, // Shadow effect
                                   child: Padding(
                                     padding: const EdgeInsets.all(16.0),
-                                    child: Row(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        // Circular photo
-                                        CircleAvatar(
-                                          radius: 30,
-                                          backgroundImage: MemoryImage(
-                                              base64Decode(d['inPhoto'])),
-                                        ),
-                                        const SizedBox(width: 16),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            // Labels Row
+                                             Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    "In Photo",
+                                                    style: GoogleFonts.montserrat(
+                                                      color: Colors.black,
+                                                      fontSize: 13,fontWeight: FontWeight.w600
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    "Out Photo",
+                                                    style: GoogleFonts.montserrat(
+                                                        color: Colors.black,
+                                                        fontSize: 13,fontWeight: FontWeight.w600
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 4),
 
-                                        // Name, In Time, Out Time, Date
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                d['name'],
-                                                style: AppTextStyles.heading(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
+                                            // Images Row
+                                            Row(
+                                              children: [
+                                                // In Photo
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(right: 4.0),
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(8),
+                                                      child: Image.memory(
+                                                        base64Decode(d['inPhoto']),
+                                                        height: 150,
+                                                        fit: BoxFit.cover,
+                                                        errorBuilder: (context, error, stackTrace) {
+                                                          return Image.asset(
+                                                            'assets/images.jpeg',
+                                                            height: 150,
+                                                            fit: BoxFit.cover,
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    TextSpan(
-                                                      text: "In Time:  ",
-                                                      style: AppTextStyles.body(
-                                                          color: Colors.grey,
-                                                          fontSize: 12),
+
+                                                // Out Photo
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(left: 4.0),
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(8),
+                                                      child: Image.memory(
+                                                        base64Decode(d['outPhoto']),
+                                                        height: 150,
+                                                        fit: BoxFit.cover,
+                                                        errorBuilder: (context, error, stackTrace) {
+                                                          return Image.asset(
+                                                            'assets/images.jpeg',
+                                                            height: 150,
+                                                            fit: BoxFit.cover,
+                                                          );
+                                                        },
+                                                      ),
                                                     ),
-                                                    TextSpan(
-                                                      text:formatTime (d['inTime']),
-                                                      style: AppTextStyles.heading(
-                                                          color: Colors.black,
-                                                          fontSize: 14),
-                                                    ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
-                                              RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    TextSpan(
-                                                      text: "Out Time:  ",
-                                                      style: AppTextStyles.body(
-                                                          color: Colors.grey,
-                                                          fontSize: 12),
-                                                    ),
-                                                    TextSpan(
-                                                      text:formatTime (d['outTime']),
-                                                      style: AppTextStyles.heading(
-                                                          color: Colors.black,
-                                                          fontSize: 14),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                "Date: ${d['date']}",
-                                                style: AppTextStyles.body(
-                                                    color: Colors.blueAccent,
-                                                    fontSize: 13),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 16),
+
+                                        // Name
+                                        Text(
+                                          d['name'],
+                                          style: AppTextStyles.heading(
+                                            color: Colors.black,
+                                            fontSize: 18,
                                           ),
                                         ),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
+                                        Text(
+                                          "Date: ${d['date']}",
+                                          style: AppTextStyles.body(
+                                                  color: Colors.black,
+                                                  fontSize: 13)
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w600),
+                                        ),
+                                        const SizedBox(height: 12),
+                                        Divider(),
+                                        // Details in rows
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    formatTime(d['inTime']),
+                                                    style:
+                                                        AppTextStyles.heading(
+                                                            color: Colors.black,
+                                                            fontSize: 15),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 4.0,
+                                                  ),
+                                                  Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.login,
+                                                          color: Colors.white,
+                                                          size: 20,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5.0,
+                                                        ),
+                                                        Text("In Time",
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        13,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600))
+                                                      ],
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                    ),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 15.0,
+                                                            vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                        color:
+                                                            Color(0xff0368ff),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    25.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    formatTime(d['outTime']),
+                                                    style:
+                                                        AppTextStyles.heading(
+                                                            color: Colors.black,
+                                                            fontSize: 15),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 4.0,
+                                                  ),
+                                                  Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.login,
+                                                          color: Colors.white,
+                                                          size: 20,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5.0,
+                                                        ),
+                                                        Text("Out Time",
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        13,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600))
+                                                      ],
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                    ),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 15.0,
+                                                            vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                        color:
+                                                            Color(0xff0368ff),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    25.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 12),
+
+                                        // Date
                                       ],
                                     ),
                                   ),
@@ -219,7 +373,6 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
             )),
     );
   }
-
 
   String formatTime(String time) {
     try {

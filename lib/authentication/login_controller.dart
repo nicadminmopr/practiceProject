@@ -51,7 +51,7 @@ class LoginController extends GetxController {
       log('header going to save is ${response.headers['authorization']}');
       await storageService.write('token', response.headers['authorization']);
       AuthManager().setAuthToken(response.headers['authorization'].toString());
-      Get.to(() => DashboardScreen());
+      Get.offAll(() => DashboardScreen());
       log('Response $responseApi');
     } else {
       isLoading.value = false;

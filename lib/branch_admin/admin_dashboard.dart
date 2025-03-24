@@ -21,7 +21,6 @@ class AdminDashboardScreen extends StatefulWidget {
 }
 
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
-
   final controller = Get.put(AdminDashboardController());
   final GlobalKey popupKey =
       GlobalKey(); // Place this outside your build method
@@ -135,9 +134,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       },
     ];
     return Scaffold(
-
       backgroundColor: Colors.white,
-
       body: Column(
         children: [
           SizedBox(height: kToolbarHeight),
@@ -285,61 +282,68 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           SizedBox(
             height: 20,
           ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 15.0),
-            child: Column(
-              children: [
-                revenueCards(),
-                SizedBox(
-                  height: 15,
-                ),
-                Column(
-                  children: [
-                    InfoCard(
-                        title: 'Total Employees',
-                        count: "${controller.aData['total'] ?? "--"}".obs,
-                        color: Colors.blue,
-                        icon: Icons.people,
-                        onTap: () {
-                          Get.to(() => EmployeeDirectory(), arguments: {
-                            "type": "all",
-                            "branch_id": controller.selectedBranch.value
-                          });
-                        }),
-                    SizedBox(height: 12),
-                    InfoCard(
-                      title: 'Present Employees',
-                      onTap: () {
-                        Get.to(() => EmployeeDirectory(), arguments: {
-                          "type": "present",
-                          "branch_id": controller.selectedBranch.value
-                        });
-                      },
-                      count: "${controller.aData['presentCount'] ?? "--"}".obs,
-                      color: Colors.green,
-                      icon: Icons.verified,
-                    ),
-                    SizedBox(height: 12),
-                    InfoCard(
-                      title: 'Total Students',
-                      count: "${controller.studentAttendanceData['total']}".obs,
-                      color: Colors.deepPurple,
-                      icon: Icons.school,
-                    ),
-                    SizedBox(height: 12),
-                    InfoCard(
-                      title: 'Present Students',
-                      count:
-                          "${controller.studentAttendanceData['presentCount']}"
-                              .obs,
-                      color: Colors.orange,
-                      icon: Icons.check_circle,
-                    ),
-                  ],
+          Obx(() => !controller.loadingFalse.value
+              ? Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    children: [
+                      revenueCards(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Column(
+                        children: [
+                          InfoCard(
+                              title: 'Total Employees',
+                              count: "${controller.aData['total'] ?? "--"}".obs,
+                              color: Colors.blue,
+                              icon: Icons.people,
+                              onTap: () {
+                                Get.to(() => EmployeeDirectory(), arguments: {
+                                  "type": "all",
+                                  "branch_id": controller.selectedBranch.value
+                                });
+                              }),
+                          SizedBox(height: 12),
+                          InfoCard(
+                            title: 'Present Employees',
+                            onTap: () {
+                              Get.to(() => EmployeeDirectory(), arguments: {
+                                "type": "present",
+                                "branch_id": controller.selectedBranch.value
+                              });
+                            },
+                            count: "${controller.aData['presentCount'] ?? "--"}"
+                                .obs,
+                            color: Colors.green,
+                            icon: Icons.verified,
+                          ),
+                          SizedBox(height: 12),
+                          InfoCard(
+                            title: 'Total Students',
+                            count:
+                                "${controller.studentAttendanceData['total']}"
+                                    .obs,
+                            color: Colors.deepPurple,
+                            icon: Icons.school,
+                          ),
+                          SizedBox(height: 12),
+                          InfoCard(
+                            title: 'Present Students',
+                            count:
+                                "${controller.studentAttendanceData['presentCount']}"
+                                    .obs,
+                            color: Colors.orange,
+                            icon: Icons.check_circle,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 )
-              ],
-            ),
-          )
+              : Center(
+                  child: CupertinoActivityIndicator(),
+                ))
         ],
       ),
     );

@@ -10,6 +10,7 @@ class AdminDashboardController extends GetxController {
   RxString selectedBranch = ''.obs;
   RxList branchList = [].obs;
   RxBool loading = false.obs;
+  RxBool loadingFalse = false.obs;
   RxMap aData = {}.obs;
   RxMap studentAttendanceData = {}.obs;
   RxList teacherMenu = [
@@ -104,6 +105,7 @@ class AdminDashboardController extends GetxController {
   }
 
   Future getStudentAttendanceData() async {
+    loadingFalse.value = true;
     var headers = {'Authorization': 'Bearer ${AuthManager().getAuthToken()}'};
     var request = http.Request(
         'GET',
@@ -115,16 +117,18 @@ class AdminDashboardController extends GetxController {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      loadingFalse.value = false;
       var d = await response.stream.bytesToString();
       var r = jsonDecode(d);
       studentAttendanceData.value = r;
     } else {
+      loadingFalse.value = false;
       print(response.reasonPhrase);
     }
   }
 
   Future getExpenditureData() async {
-    loading.value = true;
+    loadingFalse.value = true;
 
     var headers = {'Authorization': 'Bearer ${AuthManager().getAuthToken()}'};
     var request = http.Request(
@@ -137,19 +141,19 @@ class AdminDashboardController extends GetxController {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      loading.value = false;
+      loadingFalse.value = false;
 
       var d = await response.stream.bytesToString();
       var re = jsonDecode(d);
       expenditureData.value = re['totalAmount'].toString();
     } else {
-      loading.value = false;
+      loadingFalse.value = false;
       print(response.reasonPhrase);
     }
   }
 
   Future getFeeReceiptData() async {
-    loading.value = true;
+    loadingFalse.value = true;
 
     var headers = {'Authorization': 'Bearer ${AuthManager().getAuthToken()}'};
     var request = http.Request(
@@ -162,13 +166,13 @@ class AdminDashboardController extends GetxController {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      loading.value = false;
+      loadingFalse.value = false;
 
       var d = await response.stream.bytesToString();
       var re = jsonDecode(d);
       feeReceiptData.value = re['totalAmount'].toString();
     } else {
-      loading.value = false;
+      loadingFalse.value = false;
       print(response.reasonPhrase);
     }
   }
