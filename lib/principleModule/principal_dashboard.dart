@@ -318,6 +318,39 @@ class _PrincipalDashboardScreenState extends State<PrincipalDashboardScreen> {
                           color: Colors.black,
                           onPressed: () {
 
+                            Get.to(()=>Getevents());
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.view_comfy_alt,
+                                color: Colors.white,
+                                size: 25,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "View Events/Circular",
+                                style: AppTextStyles.heading(
+                                    color: Colors.white, fontSize: 16),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10,),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        height: 48,
+                        width: MediaQuery.of(context).size.width,
+
+                        child: MaterialButton(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                          color: Colors.black,
+                          onPressed: () {
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
