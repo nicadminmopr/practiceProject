@@ -13,7 +13,6 @@ import '../branch_admin/attendance_own_controller.dart';
 import '../branch_admin/camera_screen.dart';
 import '../branch_admin/employee_directory.dart';
 import '../teacher/classlist_teacher_screen.dart';
-import '../teacher/view_my_attendance.dart';
 import 'eventUpload.dart';
 import 'getEvents.dart';
 
@@ -206,18 +205,18 @@ class _PrincipalDashboardScreenState extends State<PrincipalDashboardScreen> {
                     children: [
                       Text('Welcome',
                           style: AppTextStyles.body(
-                                  color: Colors.black, fontSize: 14)
+                              color: Colors.black, fontSize: 14)
                               .copyWith(fontWeight: FontWeight.normal)),
                       Text('${AuthManager().username}',
                           style: AppTextStyles.heading(
-                                  color: Colors.black, fontSize: 16)
+                              color: Colors.black, fontSize: 16)
                               .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline)),
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline)),
                       Text(
                           '${AuthManager().designation ?? "${Get.find<DashboardController>().userRole.value}"}',
                           style: AppTextStyles.body(
-                                  color: Colors.black, fontSize: 15)
+                              color: Colors.black, fontSize: 15)
                               .copyWith(fontWeight: FontWeight.bold)),
                     ],
                   )

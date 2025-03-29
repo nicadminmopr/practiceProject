@@ -1,29 +1,48 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:get/get.dart';
+import 'package:practiceproject/utils/singleton.dart';
 
 import 'getEvents.dart';
+import 'package:http/http.dart' as http;
 
 class GetEventController extends GetxController {
   var selectedType = 'Event'.obs; // Observable variable for dropdown value
-  var events = <Event>[].obs; // Observable list of events
-  var circulars = <Circular>[].obs; // Observable list of circulars
+  var data = [].obs;
+  var loading = false.obs;
 
-  void updateSelectedType(String value) {
-    selectedType.value = value;
+  getData(String url) async {
+    data.value.clear();
+    data.value = [];
+    loading.value = true;
+    var headers = {
+      'accept': '*/*',
+      'Authorization': 'Bearer ${AuthManager().authToken}'
+    };
+    var request = http.Request('GET', Uri.parse(url));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    log("${response.statusCode}");
+    if (response.statusCode == 200) {
+      loading.value = false;
+      var d = await response.stream.bytesToString();
+      var dd = jsonDecode(d);
+      data.value = dd;
+      log('Data ${data.value}');
+    } else {
+      data.value.clear();
+      data.value = [];
+      loading.value = false;
+    }
   }
 
-  void fetchEvents() {
-    // Simulate fetching events from an API or local storage
-    events.assignAll([
-      Event(title: 'Event 1', content: 'Content for Event 1'),
-      Event(title: 'Event 2', content: 'Content for Event 2'),
-    ]);
-  }
-
-  void fetchCirculars() {
-    // Simulate fetching circulars from an API or local storage
-    circulars.assignAll([
-      Circular(title: 'Circular 1', content: 'Content for Circular 1'),
-      Circular(title: 'Circular 2', content: 'Content for Circular 2'),
-    ]);
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getData("http://147.79.66.224/madminapi/private/v1/events");
   }
 }
