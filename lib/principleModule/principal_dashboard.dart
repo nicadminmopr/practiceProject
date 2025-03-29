@@ -13,6 +13,7 @@ import '../branch_admin/attendance_own_controller.dart';
 import '../branch_admin/camera_screen.dart';
 import '../branch_admin/employee_directory.dart';
 import '../teacher/classlist_teacher_screen.dart';
+import '../teacher/view_my_attendance.dart';
 import 'eventUpload.dart';
 import 'getEvents.dart';
 
@@ -164,8 +165,8 @@ class _PrincipalDashboardScreenState extends State<PrincipalDashboardScreen> {
                     child: Icon(Icons.notifications_none,
                         color: Colors.black, size: 20.0),
                   ),
-                  onTap: (){
-                    Get.to(()=>Getevents());
+                  onTap: () {
+                    Get.to(() => Getevents());
                   },
                 ),
                 SizedBox(width: 15),
@@ -205,18 +206,18 @@ class _PrincipalDashboardScreenState extends State<PrincipalDashboardScreen> {
                     children: [
                       Text('Welcome',
                           style: AppTextStyles.body(
-                              color: Colors.black, fontSize: 14)
+                                  color: Colors.black, fontSize: 14)
                               .copyWith(fontWeight: FontWeight.normal)),
                       Text('${AuthManager().username}',
                           style: AppTextStyles.heading(
-                              color: Colors.black, fontSize: 16)
+                                  color: Colors.black, fontSize: 16)
                               .copyWith(
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline)),
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline)),
                       Text(
                           '${AuthManager().designation ?? "${Get.find<DashboardController>().userRole.value}"}',
                           style: AppTextStyles.body(
-                              color: Colors.black, fontSize: 15)
+                                  color: Colors.black, fontSize: 15)
                               .copyWith(fontWeight: FontWeight.bold)),
                     ],
                   )
@@ -226,133 +227,184 @@ class _PrincipalDashboardScreenState extends State<PrincipalDashboardScreen> {
             SizedBox(
               height: 20,
             ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 15.0),
-              child: Column(
-                children: [
-                  revenueCards(),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Column(
-                    children: [
-                      InfoCard(
-                          title: 'Total Employees',
-                          count: "${controller.aData['total'] ?? "--"}".obs,
-                          color: Colors.blue,
-                          icon: Icons.people,
-                          onTap: () {
-                            Get.to(() => EmployeeDirectory(), arguments: {
-                              "type": "all",
-                              "branch_id": controller.selectedBranch.value
-                            });
-                          }),
-                      SizedBox(height: 12),
-                      InfoCard(
-                        title: 'Present Employees',
-                        onTap: () {
-                          Get.to(() => EmployeeDirectory(), arguments: {
-                            "type": "present",
-                            "branch_id": controller.selectedBranch.value
-                          });
-                        },
-                        count: "${controller.aData['presentCount'] ?? "--"}".obs,
-                        color: Colors.green,
-                        icon: Icons.verified,
-                      ),
-                      SizedBox(height: 12),
-                      InfoCard(
-                        title: 'Total Students',
-                        count: "${controller.studentAttendanceData['total']}".obs,
-                        color: Colors.deepPurple,
-                        icon: Icons.school,
-                      ),
-                      SizedBox(height: 12),
-                      InfoCard(
-                        title: 'Present Students',
-                        count:
-                        "${controller.studentAttendanceData['presentCount']}"
-                            .obs,
-                        color: Colors.orange,
-                        icon: Icons.check_circle,
-                      ),
-                      SizedBox(height: 20,),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        height: 48,
-                        width: MediaQuery.of(context).size.width,
-
-                        child: MaterialButton(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                          color: Colors.black,
-                          onPressed: () {
-                          Get.to(()=>EventCircularScreen());
-                          },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.event,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text(
-                                "Upload Event/Circular",
-                                style: AppTextStyles.heading(
-                                    color: Colors.white, fontSize: 16),
-                              )
-                            ],
-                          ),
+            Obx(() => !controller.loadingFalse.value
+                ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Column(
+                      children: [
+                        revenueCards(),
+                        SizedBox(
+                          height: 15,
                         ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        height: 48,
-                        width: MediaQuery.of(context).size.width,
-
-                        child: MaterialButton(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                          color: Colors.black,
-                          onPressed: () {
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    MyCamera(onDataReceived: _myCallback),
+                        Column(
+                          children: [
+                            InfoCard(
+                                title: 'Total Employees',
+                                count:
+                                    "${controller.aData['total'] ?? "--"}".obs,
+                                color: Colors.blue,
+                                icon: Icons.people,
+                                onTap: () {
+                                  Get.to(() => EmployeeDirectory(), arguments: {
+                                    "type": "all",
+                                    "branch_id": controller.selectedBranch.value
+                                  });
+                                }),
+                            SizedBox(height: 12),
+                            InfoCard(
+                              title: 'Present Employees',
+                              onTap: () {
+                                Get.to(() => EmployeeDirectory(), arguments: {
+                                  "type": "present",
+                                  "branch_id": controller.selectedBranch.value
+                                });
+                              },
+                              count:
+                                  "${controller.aData['presentCount'] ?? "--"}"
+                                      .obs,
+                              color: Colors.green,
+                              icon: Icons.verified,
+                            ),
+                            SizedBox(height: 12),
+                            InfoCard(
+                              title: 'Total Students',
+                              count:
+                                  "${controller.studentAttendanceData['total']}"
+                                      .obs,
+                              color: Colors.deepPurple,
+                              icon: Icons.school,
+                            ),
+                            SizedBox(height: 12),
+                            InfoCard(
+                              title: 'Present Students',
+                              count:
+                                  "${controller.studentAttendanceData['presentCount']}"
+                                      .obs,
+                              color: Colors.orange,
+                              icon: Icons.check_circle,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              height: 48,
+                              width: MediaQuery.of(context).size.width,
+                              child: MaterialButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                color: Colors.black,
+                                onPressed: () {
+                                  Get.to(() => EventCircularScreen());
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.event,
+                                      color: Colors.white,
+                                      size: 25,
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text(
+                                      "Upload Event/Circular",
+                                      style: AppTextStyles.heading(
+                                          color: Colors.white, fontSize: 16),
+                                    )
+                                  ],
+                                ),
                               ),
-                            );
-                          },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.center_focus_strong_rounded,
-                                color: Colors.white,
-                                size: 25,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              height: 48,
+                              width: MediaQuery.of(context).size.width,
+                              child: MaterialButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                color: Colors.black,
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          MyCamera(onDataReceived: _myCallback),
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.center_focus_strong_rounded,
+                                      color: Colors.white,
+                                      size: 25,
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text(
+                                      "Mark Attendance",
+                                      style: AppTextStyles.heading(
+                                          color: Colors.white, fontSize: 16),
+                                    )
+                                  ],
+                                ),
                               ),
-                              SizedBox(
-                                width: 15,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              height: 48,
+                              width: MediaQuery.of(context).size.width,
+                              child: MaterialButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                color: Colors.black,
+                                onPressed: () {
+                                  Get.to(()=>());
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.view_agenda,
+                                      color: Colors.white,
+                                      size: 25,
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text(
+                                      "View My Attendance",
+                                      style: AppTextStyles.heading(
+                                          color: Colors.white, fontSize: 16),
+                                    )
+                                  ],
+                                ),
                               ),
-                              Text(
-                                "Mark Attendance",
-                                style: AppTextStyles.heading(
-                                    color: Colors.white, fontSize: 16),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 40,),
-                    ],
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   )
-                ],
-              ),
-            )
+                : Center(
+                    child: CupertinoActivityIndicator(),
+                  ))
           ],
         ),
       ),

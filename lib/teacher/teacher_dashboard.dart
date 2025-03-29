@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:practiceproject/dashboard_controller.dart';
+import 'package:practiceproject/teacher/view_my_attendance.dart';
 import 'package:practiceproject/utils/apptextstyles.dart';
 import 'package:practiceproject/utils/singleton.dart';
 
@@ -321,7 +322,9 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                       child: optionWidget(
                         title: "Attendance Logs",
                         color: Color(0xffaef3ff),
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(()=>ViewMyAttendance());
+                        },
                         imagePath: "assets/teacherIcons/file.png",
                       ),
                     ),
